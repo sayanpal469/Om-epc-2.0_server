@@ -17,10 +17,12 @@ const userSchema = new mongoose.Schema({
   engineer: {
     type: Schema.Types.ObjectId,
     ref: "Engineer",
+    required: false
   },
   admin: {
     type: Schema.Types.ObjectId,
     ref: "Admin",
+    required: false
   },
 });
 

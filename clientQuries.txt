@@ -70,3 +70,21 @@ mutation CreateUser($newUser: UserInput!){
     "admin": "6545e322817323af98135fd4"
   }
 }
+
+
+USER QUERY----------
+
+//-------GET USER
+query getUsers {
+  users {
+    _id
+    email
+    role
+    engineer{
+      _id
+    }
+    admin {
+     _id
+    }
+  }
+}

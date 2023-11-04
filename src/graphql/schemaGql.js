@@ -29,16 +29,11 @@ const typeDefs = gql`
     admin: Admin
   }
 
-  type Query {
-    users: [User]
-    user(_id: ID!): User
-  }
-
   input UserInput {
     email: String!
     password: String!
     role: String!
-    engineer: ID!
+    engineer: ID
     admin: ID!
   }
 
@@ -57,6 +52,15 @@ const typeDefs = gql`
     address: String!
     email: String!
     password: String!
+  }
+
+  type Query {
+    users: [User]
+    user(_id: ID!): User
+    engineers: [Engineer]
+    engineer(_id: ID!): Engineer
+    admins: [Admin]
+    admin(_id: ID!): Admin
   }
 
   type Mutation {
