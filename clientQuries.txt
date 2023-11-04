@@ -1,0 +1,72 @@
+ENGINEER MUTATIONS----------
+
+//-------CREATE ENGINEER
+mutation CreateEngineer($engineer: EngineerInput!) {
+  createEngineer(engineer: $engineer) {
+    _id
+    Fname
+    Lname
+    phone
+    EMP_id
+    email
+  }
+}
+
+//-----
+{
+  "engineer": {
+    "Fname": "Sayan",
+    "Lname": "Pal",
+    "phone": "7875325897",
+    "EMP_id": "855",
+    "image": "hjdbj",
+    "address": "west bengal",
+    "email": "sayan@gmail.com",
+    "password": "123456"
+  }
+}
+
+
+ADMIN MUTATIONS----------
+
+//-------CREATE ADMIN
+mutation CreateAdmin($admin: AdminInput!) {
+  createAdmin(admin: $admin) {
+    _id
+    name
+    email
+    password
+  }
+}
+
+//-----
+{
+  "admin": {
+    "name": "Subho",
+    "email": "subho@gmail.com",
+    "password": "123456"
+  }
+}
+
+
+USER MUTATIONS----------
+
+//-------CREATE USER
+mutation CreateUser($newUser: UserInput!){
+  user: createUser(newUser: $newUser){
+    _id
+    email
+    role
+  }
+}
+
+//-----
+{
+  "newUser": {
+    "email": "sayan@gmail.com",
+    "password": "123456",
+    "role": "Engineer",
+    "engineer": "6545e0175c7b83c89e09f2a1",
+    "admin": "6545e322817323af98135fd4"
+  }
+}
