@@ -54,11 +54,30 @@ const typeDefs = gql`
     password: String!
   }
 
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
+  input ResetPasswordInput {
+    # token: String!
+    newPassword: String!
+  }
+
+  type Token {
+    token: String
+  }
+
+  type ForgotPassword {
+    token: String
+    message: String
+  }
+
   type Query {
     users: [User]
-    user(_id: ID!): User
+    user(email: String): User
     engineers: [Engineer]
-    engineer(_id: ID!): Engineer
+    engineer(EMP_id: String): Engineer
     admins: [Admin]
     admin(_id: ID!): Admin
   }
@@ -67,6 +86,9 @@ const typeDefs = gql`
     createUser(newUser: UserInput!): User
     createAdmin(admin: AdminInput!): Admin
     createEngineer(engineer: EngineerInput!): Engineer
+    loginUser(userLogin: LoginInput!): Token
+    forgotPassword(email: String!): ForgotPassword
+    resetPassword(resetPassword: ResetPasswordInput!): Token
   }
 `;
 

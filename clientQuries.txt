@@ -88,3 +88,43 @@ query getUsers {
     }
   }
 }
+
+
+//-------GET USER BY EMAIL
+query getUserByEmail($email: String) {
+  user(email: $email) {
+    email
+    role
+  }
+}
+
+//-----
+{
+  "email": "ayan@gmail.com"
+}
+
+
+ENGINEER QUERY----------
+
+//-------GET ENGINEERS
+query getEngineer {
+  engineers {
+    _id
+    Fname
+    email
+  }
+}
+
+
+//-------GET ENGINEER BY ID
+query getEngineerById($_id: ID!) {
+  engineer(_id: $_id) {
+    Fname
+    email
+  }
+}
+
+//-----
+{
+  "_id": "6546814510af754f32834ae8"
+}
