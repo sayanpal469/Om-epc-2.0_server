@@ -117,8 +117,8 @@ query getEngineer {
 
 
 //-------GET ENGINEER BY ID
-query getEngineerById($_id: ID!) {
-  engineer(_id: $_id) {
+query getEngineerById($EMP_id: String!) {
+  engineer(EMP_id: $EMP_id) {
     Fname
     email
   }
@@ -126,5 +126,22 @@ query getEngineerById($_id: ID!) {
 
 //-----
 {
-  "_id": "6546814510af754f32834ae8"
+  "EMP_id": "857"
 }
+
+//-------LOGIN USER
+mutation LoginUser($userLogin: LoginInput!) {
+  loginUser(userLogin: $userLogin) {
+    token
+  }
+}
+//-----
+{
+  "userLogin": {
+    "email": "palas@gmail.com",
+    "password": "123456"
+  }
+}
+
+
+
