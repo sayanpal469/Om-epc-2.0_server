@@ -93,8 +93,16 @@ const resolvers = {
           password: hashedPassword,
         });
 
+        const adminUser = new User({
+          email: admin.email,
+          password: hashedPassword,
+          role: "Admin",
+          admin: adminNew._id,
+        });
+
         try {
           await adminNew.save();
+          await adminUser.save();
           return adminNew;
         } catch (error) {
           console.error(error.message);
@@ -105,13 +113,18 @@ const resolvers = {
         throw new Error("Unable to create admin");
       }
     },
-    createEngineer: async (_, { engineer }, { userId }) => {
+    createEngineer: async (_, { engineer, adminId }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
       try {
         const existingEng = await Engineer.findOne({ email: engineer.email });
+        const isAdmin = await Admin.findById(adminId);
+
+        if (!isAdmin) {
+          throw new Error("Admin id is not true");
+        }
 
         if (existingEng) {
           throw new Error("Email already in use");
@@ -124,77 +137,25 @@ const resolvers = {
           password: hashedPassword,
         });
 
+        const engUser = new User({
+          email: engineer.email,
+          password: hashedPassword,
+          role: "Engineer",
+          admin: adminId,
+          engineer: engNew._id,
+        });
+
         try {
           await engNew.save();
+          await engUser.save();
           return engNew;
         } catch (error) {
           console.error(error.message);
-          throw new Error("Unable to save engineer");
+          throw new Error("Unable to create engineer");
         }
       } catch (error) {
         // console.error("Error creating engineer:", error);
         throw new Error(error.message);
-      }
-    },
-    createUser: async (_, { newUser }) => {
-      const existingUser = await User.findOne({ email: newUser.email });
-      const isEngineer = await Engineer.findOne({
-        $and: [{ _id: newUser.engineer }, { email: newUser.email }],
-      });
-      const isAdmin = await Admin.findOne({
-        $and: [{ $or: [{ _id: newUser.admin }, { email: newUser.email }] }],
-      });
-
-      if (!isAdmin) {
-        throw new Error("Admin id not match");
-      }
-
-      if (existingUser) {
-        throw new Error("Email already in use");
-      } else if (!isEngineer && isAdmin && newUser.role !== "Engineer") {
-        // Create a user with the role set to "Admin" and the corresponding admin ID
-        if (isAdmin.email !== newUser.email) {
-          throw new Error("Admin email not match");
-        }
-        const hashedPassword = await bcrypt.hash(newUser.password, 12);
-        const userNew = new User({
-          ...newUser,
-          password: hashedPassword,
-          role: "Admin",
-          engineer: null,
-        });
-
-        try {
-          await userNew.save();
-          return userNew;
-        } catch (error) {
-          console.error("Error creating user:", error);
-          throw new Error("Unable to create user");
-        }
-      } else if (isEngineer && newUser.role !== "Engineer") {
-        throw new Error("Engineer found but the role is not 'Engineer'");
-      } else if (!isEngineer) {
-        if (!isAdmin) {
-          throw new Error("Engineer not found and Admin not found");
-        } else {
-          throw new Error("Engineer not found");
-        }
-      }
-
-      // If an engineer is found and the role is "Engineer," create the user with the engineer's ID
-      const hashedPassword = await bcrypt.hash(newUser.password, 12);
-      const userNew = new User({
-        ...newUser,
-        password: hashedPassword,
-        engineer: isEngineer._id,
-      });
-
-      try {
-        await userNew.save();
-        return userNew;
-      } catch (error) {
-        console.error("Error creating user:", error);
-        throw new Error("Unable to create user");
       }
     },
 

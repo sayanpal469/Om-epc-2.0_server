@@ -29,14 +29,6 @@ const typeDefs = gql`
     admin: Admin
   }
 
-  input UserInput {
-    email: String!
-    password: String!
-    role: String!
-    engineer: ID
-    admin: ID!
-  }
-
   input AdminInput {
     name: String
     email: String
@@ -83,9 +75,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(newUser: UserInput!): User
     createAdmin(admin: AdminInput!): Admin
-    createEngineer(engineer: EngineerInput!): Engineer
+    createEngineer(engineer: EngineerInput!, adminId: ID!): Engineer
     loginUser(userLogin: LoginInput!): Token
     forgotPassword(email: String!): ForgotPassword
     resetPassword(resetPassword: ResetPasswordInput!): Token

@@ -1,8 +1,8 @@
 ENGINEER MUTATIONS----------
 
 //-------CREATE ENGINEER
-mutation CreateEngineer($engineer: EngineerInput!) {
-  createEngineer(engineer: $engineer) {
+mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!) {
+  createEngineer(engineer: $engineer, adminId: $adminId) {
     _id
     Fname
     Lname
@@ -12,18 +12,25 @@ mutation CreateEngineer($engineer: EngineerInput!) {
   }
 }
 
-//-----
+
+### Variables
 {
-  "engineer": {
-    "Fname": "Sayan",
-    "Lname": "Pal",
-    "phone": "7875325897",
-    "EMP_id": "855",
-    "image": "hjdbj",
-    "address": "west bengal",
-    "email": "sayan@gmail.com",
-    "password": "123456"
-  }
+    "engineer": {
+        "Fname": "Ayan",
+        "Lname": "Pal",
+        "phone": "7875255897",
+        "EMP_id": "858",
+        "image": "8545jj",
+        "address": "west bengal",
+        "email": "ayan@gmail.com",
+        "password": "123456"
+    },
+    "adminId": "655871b1f71f3d756163ff6a"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourAdminIdHere"
 }
 
 
@@ -39,7 +46,7 @@ mutation CreateAdmin($admin: AdminInput!) {
   }
 }
 
-//-----
+### Variables
 {
   "admin": {
     "name": "Subho",
@@ -48,28 +55,6 @@ mutation CreateAdmin($admin: AdminInput!) {
   }
 }
 
-
-USER MUTATIONS----------
-
-//-------CREATE USER
-mutation CreateUser($newUser: UserInput!){
-  user: createUser(newUser: $newUser){
-    _id
-    email
-    role
-  }
-}
-
-//-----
-{
-  "newUser": {
-    "email": "sayan@gmail.com",
-    "password": "123456",
-    "role": "Engineer",
-    "engineer": "6545e0175c7b83c89e09f2a1",
-    "admin": "6545e322817323af98135fd4"
-  }
-}
 
 
 USER QUERY----------
@@ -89,6 +74,11 @@ query getUsers {
   }
 }
 
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourAdminIdHere"
+}
+
 
 //-------GET USER BY EMAIL
 query getUserByEmail($email: String) {
@@ -98,9 +88,14 @@ query getUserByEmail($email: String) {
   }
 }
 
-//-----
+### Variables
 {
   "email": "ayan@gmail.com"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourAdminIdHere"
 }
 
 
@@ -115,8 +110,14 @@ query getEngineer {
   }
 }
 
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourAdminIdHere"
+}
 
-//-------GET ENGINEER BY ID
+
+
+//-------GET ENGINEER BY EMP ID
 query getEngineerById($EMP_id: String!) {
   engineer(EMP_id: $EMP_id) {
     Fname
@@ -124,10 +125,16 @@ query getEngineerById($EMP_id: String!) {
   }
 }
 
-//-----
+### Variables
 {
   "EMP_id": "857"
 }
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourAdminIdHere"
+}
+
 
 //-------LOGIN USER
 mutation LoginUser($userLogin: LoginInput!) {
@@ -135,7 +142,8 @@ mutation LoginUser($userLogin: LoginInput!) {
     token
   }
 }
-//-----
+
+### Variables
 {
   "userLogin": {
     "email": "palas@gmail.com",
