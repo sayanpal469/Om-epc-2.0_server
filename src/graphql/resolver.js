@@ -169,7 +169,7 @@ const resolvers = {
       if (!doMatch) {
         throw new Error("wrong credentials");
       }
-      const token = jwt.sign({ userId: user._id }, config.jwt_secret, {
+      const token = jwt.sign({ userId: user._id, role: user.role }, config.jwt_secret, {
         expiresIn: "1h",
       });
       return { token };

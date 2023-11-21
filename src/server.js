@@ -16,8 +16,8 @@ const context = ({ req }) => {
   const { authorization } = req.headers;
   if (authorization) {
     try {
-      const { userId } = jwt.verify(authorization, config.jwt_secret);
-      return { userId };
+      const { userId, role } = jwt.verify(authorization, config.jwt_secret);
+      return { userId, role };
     } catch (error) {
       // Handle token verification errors, e.g., expired token, invalid signature
       throw new AuthenticationError("Invalid or expired token");
