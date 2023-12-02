@@ -1,0 +1,373 @@
+//-------LOGIN USER
+mutation LoginUser($userLogin: LoginInput!) {
+  loginUser(userLogin: $userLogin) {
+    token
+  }
+}
+
+### Variables
+{
+  "userLogin": {
+    "email": "palas@gmail.com",
+    "password": "123456"
+  }
+}
+
+ENGINEER MUTATIONS----------
+
+//-------CREATE ENGINEER
+mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!) {
+  createEngineer(engineer: $engineer, adminId: $adminId) {
+    _id
+    Fname
+    Lname
+    phone
+    EMP_id
+    email
+  }
+}
+
+
+### Variables
+{
+    "engineer": {
+        "Fname": "Ayan",
+        "Lname": "Pal",
+        "phone": "7875255897",
+        "EMP_id": "858",
+        "image": "8545jj",
+        "address": "west bengal",
+        "email": "ayan@gmail.com",
+        "password": "123456"
+    },
+    "adminId": "655871b1f71f3d756163ff6a"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------CREATE REPORT
+mutation CreateReport($report: ReportInput!) {
+  createReport(report: $report) {
+    _id
+    date
+    engineer_EMP
+    engineer_name
+    company
+    createdId
+  }
+}
+
+### Variables
+{
+  "report": {
+    "date": "26/11/",
+    "time": "11:30",
+    "pdf": "hbjfbh",
+    "engineer_EMP": "858",
+    "engineer_name": "Ayan Pal",
+    "company": "Tata"
+  }
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------UPDATE REPORT
+mutation EditReport($report: ReportInput!){
+  editReport(report: $report) {
+    _id
+    date
+    engineer_EMP
+    engineer_name
+    company
+    createdId
+  }
+}
+
+### Variables
+{
+  "report": {
+    "createdId": "198",
+    "date": "2023-11-30",
+    "time": "12:00",
+    "pdf": "example.pdf",
+    "engineer_EMP": "859",
+    "engineer_name": "John Doe",
+    "company": "Acme Inc."
+  }
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+//-------DELETE REPORT
+mutation DeleteReport($_id: ID!) {
+  deleteReport(_id: $_id) {
+    message
+  }
+}
+
+### Variables
+{
+  "_id": "6569bab46459fc05d78800c5"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+//-------CREATE EXPENSE REPORT
+mutation CreateExpenseReport($expenseReport: ExpenseReportInput!){
+  createExpenseReport(expenseReport: $expenseReport){
+    _id
+    date
+    time
+    amount
+    engineer_EMP
+    engineer_name
+    location
+    isApprove
+  }
+}
+
+### Variables
+{
+  "expenseReport": {
+    "date": "26-10-2023",
+    "time": "11:57am",
+    "amount": "5389",
+    "engineer_EMP": "858",
+    "engineer_name": "ayan pal",
+    "location": "Howrah"
+  }
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------UPDATE EXPENSE REPORT
+mutation updateExpenseReport($upExpReport: ExpenseReportInput!) {
+  updateExpenseReport(upExpReport: $upExpReport){
+    _id
+    date
+    time
+    amount
+    engineer_EMP
+    engineer_name
+    location
+    isApprove
+  }
+}
+
+### Variables
+{
+  "upExpReport": {
+    "_id": "6569b5bc09f86b810325f892",
+    "date": "30-11-2000",
+    "time": "12-57pm",
+    "amount": "6000",
+    "engineer_EMP": "858",
+    "engineer_name": "ayan pal",
+    "location": "howrah"
+  }
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------APPROVE EXPENSE REPORT
+mutation ApproveExpenseReport($_id: ID!, $approveExpReport: Boolean!) {
+  approveExpenseReport(_id: $_id, approveExpReport: $approveExpReport) {
+    _id
+    date
+    time
+    amount
+    engineer_EMP
+    engineer_name
+    location
+    isApprove
+  }
+}
+
+### Variables
+{
+  "_id": "6569b5bc09f86b810325f892",
+  "approveExpReport": true
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------DELETE EXPENSE REPORT
+mutation DeleteExpenseReport($_id: ID!) {
+  deleteExpReport(_id: $_id) {
+    message
+  }
+}
+
+
+### Variables
+{
+  "_id": "6569bab46459fc05d78800c5"
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+ADMIN MUTATIONS----------
+
+//-------CREATE ADMIN
+mutation CreateAdmin($admin: AdminInput!) {
+  createAdmin(admin: $admin) {
+    _id
+    name
+    email
+    password
+  }
+}
+
+### Variables
+{
+  "admin": {
+    "name": "Subho",
+    "email": "subho@gmail.com",
+    "password": "123456"
+  }
+}
+
+
+//-------CREATE CALL
+mutation CreateCall($call: CallInput!){
+  createCall(call: $call) {
+    _id
+    date
+    time
+    amount
+    location
+    assign_eng
+    eng_emp
+    status
+  }
+}
+
+### Variables
+{
+  "call": {
+    "date": "28-11-2023",
+    "time": "11-55am",
+    "amount": "5000",
+    "location": "kolkata",
+    "assign_eng": "sayan",
+    "eng_emp": "859"
+  }
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------EDIT CALL
+mutation EditCall($call: CallInput!){
+  editCall(call: $call) {
+    _id
+    date
+    time
+    amount
+    location
+    assign_eng
+    eng_emp
+    status
+  }
+}
+
+### Variables
+{
+  "call": {
+    "_id": "656b4078b3c9adc791ebf45f",
+    "date": "28-11-2023",
+    "time": "12-55am",
+    "amount": "6000",
+    "location": "kolkata",
+    "assign_eng": "sayan",
+    "eng_emp": "859"
+  }
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+//-------UPDATE CALL STATUS
+mutation UpdateCallStatus($_id: ID!, $status: CallStatus!) {
+  updateCallStatus(_id: $_id, status: $status) {
+  	_id
+    date
+    time
+    amount
+    location
+    assign_eng
+    eng_emp
+    status
+  }
+}
+
+### Variables
+{
+  "_id": "656b4078b3c9adc791ebf45f",
+  "status": "COMPLETED"
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------DELETE CALL
+mutation DeleteCall($_id: ID!) {
+  deleteCall(_id: $_id) {
+    message
+  }
+}
+
+
+### Variables
+{
+  "_id": "6569bab46459fc05d78800c5"
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
