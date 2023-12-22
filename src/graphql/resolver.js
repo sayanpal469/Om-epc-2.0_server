@@ -8,6 +8,7 @@ import generateRandomNumber from "../utils/randomNum.js";
 import { Report } from "../app/modules/report/report.model.js";
 import { ExpenseReport } from "../app/modules/expenseReport/expenseReport.model.js";
 import { Call } from "../app/modules/call/call.model.js";
+import { Attendence } from "../app/modules/attendence/attendence.model.js";
 
 const resolvers = {
   Query: {
@@ -145,13 +146,23 @@ const resolvers = {
       return reports;
     },
 
-    allExpenseReports: async (_, __, { userId }) => {
+    expenseReportsByStatus: async (_, { status }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
 
-      const expenseReports = await ExpenseReport.find();
+      let expenseReports;
+
+      if (status == "ALL") {
+        expenseReports = await ExpenseReport.find();
+      } else if (status == "RECENT") {
+        expenseReports = await ExpenseReport.find()
+          .sort({ createdAt: -1 })
+          .limit(5);
+      } else {
+        expenseReports = await ExpenseReport.find({ status: status });
+      }
 
       if (!expenseReports || expenseReports.length === 0)
         throw new Error("Expense report not found");
@@ -184,13 +195,62 @@ const resolvers = {
       return expenseReports;
     },
 
-    allCalls: async (_, __, { userId }) => {
+    expenseReportByEng: async (_, { eng_emp }, { userId }) => {
+      if (!userId) {
+        throw new Error("Authentication required");
+      }
+
+      const availableEngineer = await Engineer.findOne({
+        EMP_id: eng_emp,
+      });
+
+      if (!availableEngineer) {
+        throw new Error("Engineer does not exist");
+      }
+
+      const expenseReports = await ExpenseReport.find({
+        eng_emp: eng_emp,
+      });
+
+      if (!expenseReports || expenseReports.length === 0)
+        throw new Error("Expense report not found");
+
+      const engineerExpense = {
+        eng_id: eng_emp,
+        eng_name: expenseReports[0].eng_name,
+        expense_list: expenseReports.map((expense) => ({
+          date: expense.date,
+          time: expense.time,
+          eng_emp: expense.eng_emp,
+          eng_name: expense.eng_name,
+          company_name: expense.company_name,
+          company_location: expense.company_location,
+          call_id: expense.call_id,
+          total_expense: expense.total_expense,
+          total_kilometer: expense.total_kilometer,
+          expense_amount: expense.expense_amount,
+          isApprove: expense.isApprove,
+          eng_desc: expense.eng_desc,
+          admin_desc: expense.admin_desc,
+        })),
+      };
+
+      return engineerExpense;
+    },
+
+    callsByStatus: async (_, { status }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
 
-      const calls = await Call.find();
+      let calls;
+
+      if (status == "ALL") {
+        calls = await Call.find();
+      } else {
+        calls = await Call.find({ status: status });
+      }
 
       if (!calls || calls.length === 0) throw new Error("Calls not found");
       return calls;
@@ -209,12 +269,11 @@ const resolvers = {
       return call;
     },
 
-    callsByEng: async (_, { eng_emp }, { userId }) => {
+    callsByEng: async (_, { eng_emp, status }, { userId }) => {
       if (!userId) {
-        // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
-      
+
       const availableEngineer = await Engineer.findOne({
         EMP_id: eng_emp,
       });
@@ -223,12 +282,37 @@ const resolvers = {
         throw new Error("Engineer does not exist");
       }
 
+      let calls;
 
-      const calls = await Call.find({ eng_emp: eng_emp });
+      if (status == "ALL") {
+        calls = await Call.find({ eng_emp: eng_emp });
+      } else {
+        calls = await Call.find({
+          $and: [{ eng_emp: eng_emp }, { status: status }],
+        });
+      }
 
       if (!calls || calls.length === 0) throw new Error("Calls not found");
 
-      return calls;
+      const engineerCall = {
+        eng_id: eng_emp,
+        eng_name: calls[0].eng_name,
+        call_list: calls.map((call) => ({
+          call_id: call.call_id,
+          company_name: call.company_name,
+          company_details: call.company_details,
+          company_location: call.company_location,
+          company_address: call.company_address,
+          assigned_date: call.assigned_date,
+          assigned_time: call.assigned_time,
+          submit_date: call.submit_date || "-",
+          visit_date: call.visit_date || "-",
+          report: call.report || "-",
+          description: call.description,
+        })),
+      };
+
+      return engineerCall;
     },
 
     callsByDate: async (_, { date }, { userId }) => {
@@ -236,13 +320,48 @@ const resolvers = {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
-      const calls = await Call.find({ date: date });
+      const calls = await Call.find({ assigned_date: date });
 
       if (!calls || calls.length === 0) {
         throw new Error("No calls found for the given date");
       }
 
       return calls;
+    },
+
+    getAttendenceByEng: async (_, { eng_emp }, { userId }) => {
+      if (!userId) {
+        // If the user is not authenticated (no token), throw an error
+        throw new Error("Authentication required");
+      }
+
+      const existingEng = await Engineer.findOne({ EMP_id: eng_emp });
+
+      if (!existingEng) {
+        throw new Error("Engineer not found");
+      }
+
+      const checkAttendence = await Attendence.find({ eng_emp: eng_emp });
+
+      if (!checkAttendence || checkAttendence.length === 0) {
+        throw new Error("Attendence not found");
+      }
+
+      // Assuming each entry in checkAttendence has properties 'time' and 'date'
+      const attendanceList = checkAttendence.map((entry) => ({
+        time: entry.time,
+        date: entry.date,
+      }));
+
+      console.log(attendanceList);
+
+      const response = {
+        eng_name: checkAttendence[0].eng_name, // Assuming eng_name is the same for all entries
+        eng_emp: eng_emp,
+        attendence: attendanceList,
+      };
+
+      return response;
     },
   },
 
@@ -282,6 +401,7 @@ const resolvers = {
         throw new Error("Unable to create admin");
       }
     },
+
     createEngineer: async (_, { engineer, adminId }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
@@ -289,6 +409,7 @@ const resolvers = {
       }
       try {
         const existingEng = await Engineer.findOne({ email: engineer.email });
+        const existingEmp = await Engineer.findOne({ EMP_id: engineer.EMP_id });
         const isAdmin = await Admin.findById(adminId);
 
         if (!isAdmin) {
@@ -297,6 +418,10 @@ const resolvers = {
 
         if (existingEng) {
           throw new Error("Email already in use");
+        }
+
+        if (existingEmp) {
+          throw new Error("This Employee ID already in use");
         }
 
         const hashedPassword = await bcrypt.hash(engineer.password, 12);
@@ -328,10 +453,42 @@ const resolvers = {
       }
     },
 
+    deleteEngineer: async (_, { eng_emp }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        // Use findByIdAndDelete to find and delete the report
+        const deleteEngineer = await Engineer.findOneAndDelete({
+          EMP_id: eng_emp,
+        });
+
+        if (!deleteEngineer) {
+          throw new Error("Engineer does not exist");
+        }
+
+        return {
+          message: "Engineer deleted successfully",
+        };
+      } catch (error) {
+        console.error("Error deleting engineer:", error.message);
+        throw new Error(error.message);
+      }
+    },
+
     loginUser: async (_, { userLogin }) => {
       const user = await User.findOne({ email: userLogin.email });
       if (!user) {
         throw new Error("User dosent exists with that email");
+      }
+
+      let engineer;
+
+      if (user.engineer) {
+        engineer = user.engineer;
+      } else {
+        engineer = undefined;
       }
 
       const doMatch = await bcrypt.compare(userLogin.password, user.password);
@@ -339,7 +496,12 @@ const resolvers = {
         throw new Error("wrong credentials");
       }
       const token = jwt.sign(
-        { userId: user._id, role: user.role },
+        {
+          userId: user._id,
+          role: user.role,
+          admin: user.admin,
+          engineer: engineer,
+        },
         config.jwt_secret,
         {
           expiresIn: "1h",
@@ -531,7 +693,7 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: expenseReport.engineer_EMP,
+          EMP_id: expenseReport.eng_emp,
         });
 
         if (!availableEngineer) {
@@ -548,13 +710,16 @@ const resolvers = {
 
         const reportNew = new ExpenseReport({
           ...expenseReport,
-          engineer_name: expenseReport.engineer_name.toLowerCase(),
-          location: expenseReport.location.toLowerCase(),
+          eng_name: expenseReport.eng_name.toLowerCase(),
         });
 
         try {
           await reportNew.save();
-          return reportNew;
+          const response = {
+            call_id: reportNew.call_id,
+            message: "Expense report submitted",
+          };
+          return response;
         } catch (error) {
           // console.error(error.message);
           throw new Error("Unable to save expenses report");
@@ -587,10 +752,17 @@ const resolvers = {
             $set: {
               date: upExpReport.date,
               time: upExpReport.time,
-              amount: upExpReport.amount,
-              engineer_EMP: upExpReport.engineer_EMP,
-              engineer_name: upExpReport.engineer_name.toLowerCase(),
-              location: upExpReport.location.toLowerCase(),
+              eng_emp: upExpReport.engineer_EMP,
+              eng_name: upExpReport.engineer_name,
+              company_name: upExpReport.company_name,
+              company_location: upExpReport.company_location,
+              call_id: upExpReport.call_id,
+              total_expense: upExpReport.total_expense,
+              total_kilometer: upExpReport.total_kilometer,
+              expense_amount: upExpReport.expense_amount,
+              isApprove: upExpReport.isApprove,
+              eng_desc: upExpReport.eng_desc,
+              admin_desc: upExpReport.admin_desc,
             },
           },
           { new: true }
@@ -607,31 +779,51 @@ const resolvers = {
       }
     },
 
-    approveExpenseReport: async (_, { _id, approveExpReport }, { userId }) => {
+    approveExpenseReport: async (
+      _,
+      { _id, approveStatus, admin_desc },
+      { userId }
+    ) => {
       try {
         if (!userId) {
           throw new Error("Authentication required");
         }
 
-        if (approveExpReport === true) {
-          const approvedExpReport = await ExpenseReport.findOneAndUpdate(
+        const existsReport = await ExpenseReport.findById(_id);
+
+        if (!existsReport) {
+          throw new Error("Expense report does not exist");
+        }
+
+        let reportStatus;
+
+        if (approveStatus == "APPROVE") {
+          reportStatus = await ExpenseReport.findOneAndUpdate(
             { _id: _id },
             {
               $set: {
-                isApprove: approveExpReport,
+                isApprove: approveStatus,
+                status: approveStatus,
+                admin_desc: "Report approved",
               },
             },
             { new: true }
           );
-
-          if (!approvedExpReport) {
-            throw new Error("Expense report does not exist");
-          }
-
-          return approvedExpReport;
-        } else {
-          throw new Error("Invalid data provided");
+        } else if (approveStatus == "REJECT") {
+          reportStatus = await ExpenseReport.findOneAndUpdate(
+            { _id: _id },
+            {
+              $set: {
+                isApprove: approveStatus,
+                status: approveStatus,
+                admin_desc: admin_desc,
+              },
+            },
+            { new: true }
+          );
         }
+
+        return reportStatus;
       } catch (error) {
         console.error("Error approving report:", error.message);
         throw new Error(error.message);
@@ -678,16 +870,17 @@ const resolvers = {
 
         const callNew = new Call({
           ...call,
-          assign_eng: call.assign_eng.toLowerCase(),
-          location: call.location.toLowerCase(),
+          eng_name: call.eng_name.toLowerCase(),
         });
 
         try {
           await callNew.save();
-          return callNew;
+          return {
+            message: "Call created",
+          };
         } catch (error) {
           console.error(error.message);
-          throw new Error("Unable to save call");
+          throw new Error("Unable to create call");
         }
       } catch (error) {
         console.error("Error creating call:", error.message);
@@ -715,12 +908,23 @@ const resolvers = {
           { _id: call._id },
           {
             $set: {
-              date: call.date,
-              time: call.time,
-              amount: call.amount,
-              location: call.location.toLowerCase(),
-              assign_eng: call.assign_eng.toLowerCase(),
-              eng_emp: call.eng_emp,
+              company_name: call.company_name,
+              company_details: call.company_details,
+              company_location: call.company_location,
+              company_address: call.company_address,
+              eng_name: call.eng_name,
+              assigned_date: call.assigned_date,
+              assigned_time: call.assigned_time,
+              description: call.description,
+              call_id: call.call_id,
+              customer_contact: call.customer_contact,
+              submit_date:
+                call.submit_date === "-" ? undefined : call.submit_date,
+              visit_date:
+                call.visit_date === "-" ? undefined : call.submit_date,
+              completed: call.completed,
+              expense_amount: call.expense_amount.split(" | ")[0], // Extracting the value before " | "
+              report: call.report === "-" ? undefined : call.report,
             },
           },
           { new: true }
@@ -784,6 +988,43 @@ const resolvers = {
         };
       } catch (error) {
         console.error("Error deleting call:", error.message);
+        throw new Error(error.message);
+      }
+    },
+
+    submitAttendence: async (_, { attendence }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        const availableEngineer = await Engineer.findOne({
+          EMP_id: attendence.eng_emp,
+        });
+
+        if (!availableEngineer) {
+          throw new Error("Engineer does not exist");
+        }
+
+        const submitedAttendence = new Attendence({
+          ...attendence,
+          eng_name: attendence.eng_name.toLowerCase(),
+        });
+
+        try {
+          await submitedAttendence.save();
+          const response = {
+            eng_name: attendence.eng_name,
+            eng_emp: attendence.eng_emp,
+            message: "Successfully log in",
+          };
+          return response;
+        } catch (error) {
+          // console.error(error.message);
+          throw new Error("Unable to save expenses report");
+        }
+      } catch (error) {
+        // console.error("Error creating expense report:", error.message);
         throw new Error(error.message);
       }
     },

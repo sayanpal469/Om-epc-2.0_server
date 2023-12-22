@@ -16,31 +16,35 @@ mutation LoginUser($userLogin: LoginInput!) {
 ENGINEER MUTATIONS----------
 
 //-------CREATE ENGINEER
-mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!) {
-  createEngineer(engineer: $engineer, adminId: $adminId) {
+mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
+  createEngineer(engineer: $engineer, adminId: $adminId){
     _id
     Fname
     Lname
-    phone
+    contact
+    age
     EMP_id
+    address
     email
+    designation
   }
 }
 
 
 ### Variables
 {
-    "engineer": {
-        "Fname": "Ayan",
-        "Lname": "Pal",
-        "phone": "7875255897",
-        "EMP_id": "858",
-        "image": "8545jj",
-        "address": "west bengal",
-        "email": "ayan@gmail.com",
-        "password": "123456"
-    },
-    "adminId": "655871b1f71f3d756163ff6a"
+  "engineer": {
+    "Fname": "subhojit",
+    "Lname": "dutta",
+    "contact": "7872564125",
+    "age": "24",
+    "EMP_id": "858",
+    "address": "kolkata",
+    "email": "subho@gmail.com",
+    "password": "123456",
+    "designation": "developer"
+  },
+  "adminId": "6558f3b80e48800b8d7749e9"
 }
 
 # CHECK AUTHORIZATION
@@ -129,28 +133,30 @@ mutation DeleteReport($_id: ID!) {
 //-------CREATE EXPENSE REPORT
 mutation CreateExpenseReport($expenseReport: ExpenseReportInput!){
   createExpenseReport(expenseReport: $expenseReport){
-    _id
-    date
-    time
-    amount
-    engineer_EMP
-    engineer_name
-    location
-    isApprove
+  call_id
+    message
   }
 }
 
 ### Variables
 {
   "expenseReport": {
-    "date": "26-10-2023",
-    "time": "11:57am",
-    "amount": "5389",
-    "engineer_EMP": "858",
-    "engineer_name": "ayan pal",
-    "location": "Howrah"
+    "date": "2023-12-17",
+    "time": "12:00 PM",
+    "eng_emp": "858",
+    "eng_name": "ayan",
+    "company_name": "ABC Corp",
+    "company_location": "Cityville",
+    "call_id": "C123",
+    "total_expense": "500",
+    "total_kilometer": "50",
+    "expense_amount": "100",
+    "isApprove": false,
+    "eng_desc": "Description from engineer",
+    "admin_desc": "Admin's comment"
   }
 }
+
 
 # CHECK AUTHORIZATION
 {
@@ -193,23 +199,19 @@ mutation updateExpenseReport($upExpReport: ExpenseReportInput!) {
 
 
 //-------APPROVE EXPENSE REPORT
-mutation ApproveExpenseReport($_id: ID!, $approveExpReport: Boolean!) {
-  approveExpenseReport(_id: $_id, approveExpReport: $approveExpReport) {
+mutation ApproveExpenseReport($_id: ID!, $approveStatus: ExpenseApproveEnum!, $admin_desc: String) {
+  status: approveExpenseReport(_id: $_id, approveStatus: $approveStatus, admin_desc: $admin_desc) {
     _id
-    date
-    time
-    amount
-    engineer_EMP
-    engineer_name
-    location
     isApprove
+    admin_desc
   }
 }
 
 ### Variables
 {
-  "_id": "6569b5bc09f86b810325f892",
-  "approveExpReport": true
+  "_id": "65846c2a2459eb3d5e774afe",
+  "approveStatus": "APPROVE",
+  "admin_desc": "taka debo na, bari jao" // [only for reject report]
 }
 
 # CHECK AUTHORIZATION
@@ -261,28 +263,26 @@ mutation CreateAdmin($admin: AdminInput!) {
 
 
 //-------CREATE CALL
-mutation CreateCall($call: CallInput!){
+mutation CreateCall($call: CallInput!) {
   createCall(call: $call) {
-    _id
-    date
-    time
-    amount
-    location
-    assign_eng
-    eng_emp
-    status
+    message
   }
 }
 
 ### Variables
 {
   "call": {
-    "date": "28-11-2023",
-    "time": "11-55am",
-    "amount": "5000",
-    "location": "kolkata",
-    "assign_eng": "sayan",
-    "eng_emp": "859"
+    "company_name": "Apple",
+    "company_details": "apple authorised service center",
+    "company_location": "Esplanade",
+    "company_address": "88,old calcutta road, barrrackpore",
+    "eng_name": "ayan",
+    "eng_emp": "858",
+    "assigned_date": "07/12/2023",
+    "assigned_time": "08:58 PM",
+    "description": "Repair monitor",
+    "call_id": "01/abc/204",
+    "customer_contact": "7875457896"
   }
 }
 
@@ -328,20 +328,13 @@ mutation EditCall($call: CallInput!){
 //-------UPDATE CALL STATUS
 mutation UpdateCallStatus($_id: ID!, $status: CallStatus!) {
   updateCallStatus(_id: $_id, status: $status) {
-  	_id
-    date
-    time
-    amount
-    location
-    assign_eng
-    eng_emp
     status
   }
 }
 
 ### Variables
 {
-  "_id": "656b4078b3c9adc791ebf45f",
+  "_id": "65827a05471ec7afa7cb6355",
   "status": "COMPLETED"
 }
 
@@ -365,6 +358,32 @@ mutation DeleteCall($_id: ID!) {
   "_id": "6569bab46459fc05d78800c5"
 }
 
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------SUBMIT ATTENDENSE
+mutation Atendense($attendence: AttendenceInput!){
+  submitAttendence(attendence: $attendence) {
+    eng_name
+    eng_emp
+    message
+  }
+}
+
+### Variables
+{
+  "attendence": {
+    "date": "22-12-2023",
+    "eng_name": "sayan pal",
+    "eng_emp": "859",
+    "time": "08-45am",
+    "location": "kolkata"
+  }
+}
 
 # CHECK AUTHORIZATION
 {

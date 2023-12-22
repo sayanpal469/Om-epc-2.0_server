@@ -17,7 +17,7 @@ query getUsers {
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -36,7 +36,7 @@ query getUserByEmail($email: String) {
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -53,7 +53,7 @@ query getEngineer {
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -73,7 +73,7 @@ query getEngineerById($EMP_id: String!) {
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -93,7 +93,7 @@ query getAllReports{
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 //-------GET REPORT BY ID
@@ -116,7 +116,7 @@ query getReportById($createdId: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -140,7 +140,7 @@ query getReportByCompany($company: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -164,7 +164,7 @@ query getReportByEngineer($engineer_EMP: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -188,25 +188,38 @@ query getReportByDate($date: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
-//-------GET ALL EXPENSE REPORTS
-query getAllExpenseReports{
-  allExpenseReports{
-    _id
+//-------GET EXPENSE REPORTS BY STATUS
+query GetExpenseReportsByStatus($status: ExpenseStatus!){
+  expenseReportsByStatus(status: $status){
+   _id
     date
-    amount
-    engineer_EMP
-    engineer_name
-    location
+    time
+    eng_emp
+    eng_name
+    company_name
+    company_location
+    call_id
+    total_expense
+    total_kilometer
+    expense_amount
     isApprove
+    status
+    eng_desc
+    admin_desc
   }
+}
+
+### Variables
+{
+  "status": "RECENT" //["APPROVED", "REJECT", "RECENT", "ALL", "PENDING"]
 }
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 //-------GET EXPENSE REPORT BY ID
@@ -230,7 +243,7 @@ query getExpenseReportById($_id: ID!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 
@@ -256,26 +269,73 @@ query getExpenseReportsByDate($date: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
-//-------GET ALL CALLS
-query GetAllCalls{
-  allCalls{
-    _id
-    date
-    time
-    amount
-    location
-    assign_eng
-    eng_emp
-    status
+//-------GET EXPENSE REPORTS BY ENGINEER
+query ExpenseReportByEngineer($eng_emp: String!){
+  expenseReportByEng(eng_emp: $eng_emp){
+    eng_id
+    eng_name
+    expense_list{
+      date
+      time
+      eng_emp
+      eng_name
+      company_name
+      company_location
+      call_id
+      total_expense
+      total_kilometer
+      expense_amount
+      isApprove
+      eng_desc
+      admin_desc
+    }
   }
+}
+
+### Variables
+{
+  "eng_emp": "859"
 }
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
+}
+
+//-------GET CALLS BY STATUS
+query GetCallsByStatus($status: String!) {
+  calls: callsByStatus(status: $status) {
+    _id
+    company_name
+    company_details
+    company_location
+    company_address
+    eng_name
+    eng_emp
+    assigned_date
+    assigned_time
+    description
+    call_id
+    submit_date
+    completed
+    expense_amount
+    report
+    status
+  }
+}
+
+
+### Variables
+{
+  "status": "RUNNING"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
 }
 
 
@@ -283,59 +343,85 @@ query GetAllCalls{
 query GetCallsById($_id: ID!){
   call(_id: $_id){
     _id
-    date
-    time
-    amount
-    location
-    assign_eng
+    company_name
+    company_details
+    company_location
+    company_address
+    eng_name
     eng_emp
+    assigned_date
+    assigned_time
+    description
+    call_id
+    submit_date
+    completed
+    expense_amount
+    report
     status
   }
 }
 
 ### Variables
 {
-  "_id": "656b4078b3c9adc791ebf45f"
+  "_id": "658276ad471ec7afa7cb634f"
 }
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 //-------GET CALLS BY ENGINEER
-query GetCallsByEngineer($eng_emp: String!){
-  callsByEng(eng_emp: $eng_emp){
-    _id
-    date
-    time
-    amount
-    location
-    assign_eng
-    eng_emp
-    status
+query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
+  callsByEng(eng_emp: $eng_emp, status: $status) {
+    eng_id
+    eng_name
+    call_list {
+      call_id
+      company_name
+      company_details
+      company_location
+      company_address
+      assigned_date
+      assigned_time
+      submit_date
+      report
+      description
+    }
   }
 }
+
+
 ### Variables
 {
-	"eng_emp": "859"
+  "eng_emp": "858",
+  "status": "ALL"
 }
+
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
 }
 
 //-------GET CALLS BY DATE
 query GetCallsByDate($date: String!){
-  callsByDate(date: $date){
-    _id
-    date
-    time
-    amount
-    location
-    assign_eng
+  calls: callsByDate(date: $date){
+   _id
+    company_name
+    company_details
+    company_location
+    company_address
+    eng_name
     eng_emp
+    assigned_date
+    assigned_time
+    description
+    call_id
+    submit_date
+    completed
+    expense_amount
+    report
     status
   }
 }
@@ -347,5 +433,28 @@ query GetCallsByDate($date: String!){
 
 # CHECK AUTHORIZATION
 {
-  "authorization": "yourAdminIdHere"
+  "authorization": "yourTokenHere"
+}
+
+
+//-------GET CALLS BY DATE
+query GetAttendenceByEngineer($eng_emp: String!){
+  AttendenceList:getAttendenceByEng(eng_emp: $eng_emp){
+    eng_name
+    eng_emp
+    attendence{
+      time
+      date
+    }
+  }
+}
+
+### Variables
+{
+  "eng_emp": "858"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
 }

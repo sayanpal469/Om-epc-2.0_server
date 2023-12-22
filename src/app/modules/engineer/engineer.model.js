@@ -1,17 +1,39 @@
 import mongoose from "mongoose";
 
 const engineerSchema = new mongoose.Schema({
-  Fname: String,
-  Lname: String,
-  phone: String,
-  EMP_id: String,
-  image: String,
-  address: String,
+  Fname: {
+    type: String,
+    required: true,
+  },
+  Lname: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: String,
+    required: true,
+  },
+  EMP_id: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
   },
   password: {
+    type: String,
+    required: true,
+  },
+  designation: {
     type: String,
     required: true,
   },
