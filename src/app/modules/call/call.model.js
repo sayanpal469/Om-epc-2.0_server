@@ -20,7 +20,7 @@ const callSchema = new mongoose.Schema(
     report: { type: String, default: "-" },
     status: {
       type: String,
-      enum: ["PENDING", "RUNNING", "COMPLETED", "ALL"],
+      enum: ["PENDING", "TODAY", "COMPLETED", "ALL"],
       default: "PENDING",
     },
   },

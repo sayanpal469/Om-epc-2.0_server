@@ -19,7 +19,7 @@ const expenseReportSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["APPROVED", "REJECT", "RECENT", "ALL", "PENDING"],
+      enum: ["APPROVE", "REJECT", "RECENT", "ALL", "PENDING"],
       default: "PENDING",
     },
     eng_desc: { type: String, required: true },

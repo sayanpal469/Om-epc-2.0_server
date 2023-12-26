@@ -52,28 +52,119 @@ mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
   "authorization": "yourTokenHere"
 }
 
+//-------DELETE ENGINEER
+mutation DeteleEngineer($eng_emp: String!){
+  deleteEngineer(eng_emp: $eng_emp) {
+    message
+  }
+}
+
+### Variables
+{
+  "eng_emp": "859"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
 
 //-------CREATE REPORT
 mutation CreateReport($report: ReportInput!) {
   createReport(report: $report) {
     _id
+    company_name
+    call_id
+    emp_id
+    complain_id
     date
-    engineer_EMP
-    engineer_name
-    company
-    createdId
+    customer_name
+    client_name
+    atm_id
+    contact
+    address
+    site_type
+    device_type
+    product_make
+    product_slNo
+    buy_back_details
+    nature_of_complaint
+    ac_input_three_phase
+    ac_output_three_phase
+    ac_input_single_phase
+    ac_output_single_phase
+    DC {
+      V
+      V_withMains
+      V_withoutMains
+    }
+    power_cut
+    battery_make
+    battery_type
+    battery_AH
+    quantity
+    battery_test_report {
+      battery_catch_code
+      with_mains
+      without_mains
+      after_5_min
+      after_10_min
+      after_20_min
+      after_40_min
+      after_1_hour
+      signature
+    }
+    signature
   }
 }
 
 ### Variables
 {
   "report": {
-    "date": "26/11/",
-    "time": "11:30",
-    "pdf": "hbjfbh",
-    "engineer_EMP": "858",
-    "engineer_name": "Ayan Pal",
-    "company": "Tata"
+    "company_name": "Your Company",
+    "call_id": "123456",
+    "emp_id": "859",
+    "complain_id": "789012",
+    "date": "2023-01-01",
+    "customer_name": "John Doe",
+    "client_name": "ABC Corp",
+    "atm_id": "ATM123",
+    "contact": "1234567890",
+    "address": "123 Main Street",
+    "site_type": "ONSITE",
+    "device_type": "UPS",
+    "product_make": "BrandX",
+    "product_slNo": "987654",
+    "buy_back_details": "Details",
+    "nature_of_complaint": "Power failure",
+    "ac_input_three_phase": "R_Y",
+    "ac_output_three_phase": "R_Y",
+    "ac_input_single_phase": "L_N",
+    "ac_output_single_phase": "L_N",
+    "DC": {
+      "V": "24",
+      "V_withMains": "28",
+      "V_withoutMains": "25"
+    },
+    "power_cut": "Yes",
+    "battery_make": "BatteryBrand",
+    "battery_type": "Lithium-ion",
+    "battery_AH": "100",
+    "quantity": "2",
+    "battery_test_report": {
+      "battery_catch_code": "ABC123",
+      "with_mains": "28",
+      "without_mains": "25",
+      "after_5_min": "27",
+      "after_10_min": "26",
+      "after_20_min": "25",
+      "after_40_min": "24",
+      "after_1_hour": "23",
+      "signature": "John Doe"
+    },
+    "signature": "Engineer Signature"
   }
 }
 

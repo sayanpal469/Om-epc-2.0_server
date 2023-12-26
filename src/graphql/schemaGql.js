@@ -3,7 +3,7 @@ import { gql } from "apollo-server";
 const typeDefs = gql`
   enum CallStatus {
     PENDING
-    RUNNING
+    TODAY
     COMPLETED
     ALL
   }
@@ -20,6 +20,142 @@ const typeDefs = gql`
     RECENT
     PENDING
     ALL
+  }
+
+  enum DeviceTypeEnum {
+    UPS
+    UPS_BATTERY
+    INVERTER
+    INVERTER_BATTERY
+    STABILIZER
+    SOLAR
+    COMPUTER
+    PRINTER
+    CCTV
+  }
+
+  enum SiteTypeEnum {
+    ONSITE
+    OFFSITE
+    WARRANTY
+    AMC
+    INSTALLATION
+    SITE_INSPECTION
+    CHARGEABLE
+    PM
+    SERVICE
+  }
+
+  enum ThreePhaseEnum {
+    R_Y
+    Y_B
+    R_B
+    N_R
+  }
+
+  enum SinglePhaseEnum {
+    L_N
+    N_E
+    L_E
+  }
+
+  input DCInput {
+    V: String
+    V_withMains: String
+    V_withoutMains: String
+  }
+
+  input BatteryTestReportInput {
+    battery_catch_code: String
+    with_mains: String
+    without_mains: String
+    after_5_min: String
+    after_10_min: String
+    after_20_min: String
+    after_40_min: String
+    after_1_hour: String
+    signature: String
+  }
+
+  input ReportInput {
+    company_name: String
+    call_id: String
+    emp_id: String
+    complain_id: String
+    date: String
+    customer_name: String
+    client_name: String
+    atm_id: String
+    contact: String
+    address: String
+    site_type: SiteTypeEnum
+    device_type: DeviceTypeEnum
+    product_make: String
+    product_slNo: String
+    buy_back_details: String
+    nature_of_complaint: String
+    ac_input_three_phase: ThreePhaseEnum
+    ac_output_three_phase: ThreePhaseEnum
+    ac_input_single_phase: SinglePhaseEnum
+    ac_output_single_phase: SinglePhaseEnum
+    DC: DCInput
+    power_cut: String
+    battery_make: String
+    battery_type: String
+    battery_AH: String
+    quantity: String
+    battery_test_report: BatteryTestReportInput
+    signature: String
+  }
+
+  type DCType {
+    V: String
+    V_withMains: String
+    V_withoutMains: String
+  }
+
+  type BatteryTestReportType {
+    battery_catch_code: String
+    with_mains: String
+    without_mains: String
+    after_5_min: String
+    after_10_min: String
+    after_20_min: String
+    after_40_min: String
+    after_1_hour: String
+    signature: String
+  }
+
+  type Report {
+    _id: ID
+    company_name: String
+    call_id: String
+    emp_id: String
+    complain_id: String
+    date: String
+    customer_name: String
+    client_name: String
+    atm_id: String
+    contact: String
+    address: String
+    site_type: SiteTypeEnum
+    device_type: DeviceTypeEnum
+    product_make: String
+    product_slNo: String
+    buy_back_details: String
+    nature_of_complaint: String
+    ac_input_three_phase: ThreePhaseEnum
+    ac_output_three_phase: ThreePhaseEnum
+    ac_input_single_phase: SinglePhaseEnum
+    ac_output_single_phase: SinglePhaseEnum
+    DC: DCType
+    power_cut: String
+    battery_make: String
+    battery_type: String
+    battery_AH: String
+    quantity: String
+    battery_test_report: BatteryTestReportType
+    signature: String
   }
 
   type SubmitExpenseResponse {
@@ -69,7 +205,6 @@ const typeDefs = gql`
   }
 
   input ExpenseReportInput {
-    _id: ID
     date: String!
     time: String!
     eng_emp: String!
@@ -136,22 +271,54 @@ const typeDefs = gql`
     message: String
   }
 
-  type Report {
-    _id: ID
-    date: String
-    pdf: String
-    engineer_EMP: String
-    engineer_name: String
-    company: String
-    createdId: String
-  }
-
   type Message {
     message: String
   }
 
+  type EngineerCall {
+    eng_id: String
+    eng_name: String
+    call_list: [CallDetails]
+  }
+
+  input AdminInput {
+    name: String
+    email: String
+    password: String
+  }
+
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
+  input ResetPasswordInput {
+    # token: String!
+    newPassword: String!
+  }
+
   type Call {
     _id: ID
+    company_name: String!
+    company_details: String!
+    company_location: String!
+    company_address: String!
+    eng_name: String!
+    eng_emp: String!
+    assigned_date: String!
+    assigned_time: String!
+    description: String!
+    call_id: String!
+    customer_contact: String!
+    submit_date: String
+    visit_date: String
+    completed: Boolean
+    expense_amount: String
+    report: String
+    status: CallStatus
+  }
+
+  input CallInput {
     company_name: String!
     company_details: String!
     company_location: String!
@@ -183,60 +350,8 @@ const typeDefs = gql`
     visit_date: String
     customer_contact: String
     report: String
-    description: String
-  }
-
-  type EngineerCall {
-    eng_id: String
-    eng_name: String
-    call_list: [CallDetails]
-  }
-
-  input AdminInput {
-    name: String
-    email: String
-    password: String
-  }
-
-  input LoginInput {
-    email: String!
-    password: String!
-  }
-
-  input ResetPasswordInput {
-    # token: String!
-    newPassword: String!
-  }
-
-  input ReportInput {
-    date: String!
-    time: String!
-    pdf: String!
-    engineer_EMP: String!
-    engineer_name: String!
-    company: String!
-    createdId: String
-  }
-
-  input CallInput {
-    _id: ID
-    company_name: String!
-    company_details: String!
-    company_location: String!
-    company_address: String!
-    eng_name: String!
-    eng_emp: String!
-    assigned_date: String!
-    assigned_time: String!
-    description: String!
-    call_id: String!
-    customer_contact: String!
-    submit_date: String
-    visit_date: String
-    completed: Boolean
-    expense_amount: String
-    report: String
     status: CallStatus
+    description: String
   }
 
   type Attendence {
@@ -281,9 +396,9 @@ const typeDefs = gql`
     admins: [Admin]
     admin(_id: ID!): Admin
     allReports: [Report]
-    report(createdId: String!): Report
+    report(_id: ID!): Report
     reportByCompany(company: String!): [Report]
-    reportByEngineer(engineer_EMP: String!): [Report]
+    reportByEngineer(eng_emp: String!): [Report]
     reportByDate(date: String): [Report]
     expenseReportsByStatus(status: ExpenseStatus!): [ExpenseReport]
     expenseReport(_id: ID!): ExpenseReport

@@ -93,13 +93,13 @@ const resolvers = {
       return reports;
     },
 
-    report: async (_, { createdId }, { userId }) => {
+    report: async (_, { _id }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
-      const report = await Report.findOne({ createdId: createdId });
-      console.log(createdId);
+      const report = await Report.findOne({ _id: _id });
+      // console.log(_id);
 
       if (!report) throw new Error("Report not found");
 
@@ -112,7 +112,7 @@ const resolvers = {
         throw new Error("Authentication required");
       }
       const report = await Report.find({
-        company: { $regex: new RegExp(company, "i") },
+        company_name: { $regex: new RegExp(company, "i") },
       });
 
       if (!report || report.length === 0) throw new Error("Report not found");
@@ -120,14 +120,14 @@ const resolvers = {
       return report;
     },
 
-    reportByEngineer: async (_, { engineer_EMP }, { userId }) => {
+    reportByEngineer: async (_, { eng_emp }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
-      const report = await Report.find({ engineer_EMP: engineer_EMP });
+      const report = await Report.find({ emp_id: eng_emp });
 
-      if (!report) throw new Error("Report not found");
+      if (!report || report.length === 0) throw new Error("Report not found");
 
       return report;
     },
@@ -248,6 +248,16 @@ const resolvers = {
 
       if (status == "ALL") {
         calls = await Call.find();
+      } else if (status === "TODAY") {
+        const today = new Date();
+        today.setHours(6, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for the start of the day
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1); // Get the start of the next day
+
+        calls = await Call.find({
+          createdAt: { $gte: today, $lt: tomorrow },
+        });
       } else {
         calls = await Call.find({ status: status });
       }
@@ -308,6 +318,7 @@ const resolvers = {
           submit_date: call.submit_date || "-",
           visit_date: call.visit_date || "-",
           report: call.report || "-",
+          status: call.status,
           description: call.description,
         })),
       };
@@ -583,28 +594,25 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: report.engineer_EMP,
+          EMP_id: report.emp_id,
         });
 
         if (!availableEngineer) {
           throw new Error("Engineer does not exist");
         }
 
-        const existingReport = await Report.findOne({
-          createdId: report.createdId,
-        });
+        // const existingReport = await Report.findOne({
+        //   _id: report._id,
+        // });
 
-        if (existingReport) {
-          throw new Error("This report has already been created");
-        }
+        // if (existingReport) {
+        //   throw new Error("This report has already been created");
+        // }
 
-        const makeCreatedId = generateRandomNumber(100, 999);
+        // const makeCreatedId = generateRandomNumber(100, 999);
 
         const reportNew = new Report({
           ...report,
-          engineer_name: report.engineer_name.toLowerCase(),
-          company: report.company.toLowerCase(),
-          createdId: makeCreatedId,
         });
 
         try {
