@@ -7,7 +7,6 @@ const expenseReportSchema = new mongoose.Schema(
     company_name: { type: String, required: true },
     company_location: { type: String, required: true },
     call_id: { type: String, required: true },
-    total_expense: { type: String, required: true },
     total_kilometer: { type: String, required: true },
     time: { type: String, required: true },
     date: { type: String, required: true },

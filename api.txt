@@ -25,14 +25,14 @@ Todays_calls : 10 //number
 payload:
 {
 eng_name : "Tapas" // string
-eng_id   :"00152/tapas" //string
+eng_emp   :"00152/tapas" //string
 }
 
 
 Reponse: 
 {
 eng_name: "Tapas", //string
-eng_id   :"00152/tapas" //string
+eng_emp   :"00152/tapas" //string
 attendence : ["07/10/2023", "07/05/2023", "06/10/2023"] // array of strings
 }
 
@@ -102,7 +102,7 @@ payload :
 {
 date: "07/01/2023",
 eng_name:"Tapas",
-eng_id: "01/tapas"
+eng_emp: "01/tapas"
 time:"07:54 pm"
 lcoation:"howrah"
 }
@@ -110,7 +110,7 @@ lcoation:"howrah"
 
 reponse{
 eng_name:"Tapas",
-eng_id: "01/tapas"
+eng_emp: "01/tapas"
 msg:"successfull log in"
 }
 
@@ -123,13 +123,13 @@ msg:"successfull log in"
 payload:
 {
 eng_name:"tapas",
-eng_id :"01/tapas",
+eng_emp :"01/tapas",
 call_category : "all" | "pending" | "todays" | "new"
 }
 
 Response
 {
-eng_id: "01/tapas"
+eng_emp: "01/tapas"
 eng_name:"tapas",
 "call_list" : [{
 call_id: "01/52/ups", // string
@@ -154,7 +154,7 @@ description :"Repair two lcd monitor" }]
 payload: 
 {
 eng_name:"tapas",
-eng_id :"01/tapas"
+eng_emp :"01/tapas"
 company_name: "dell"
 company_location:"esplanade"
 call_id :"01/ups"
@@ -182,7 +182,7 @@ msg:" expense submitted"
 
 payload{
 eng_name: "tapas"
-eng_id :"01/tapas"
+eng_emp :"01/tapas"
 }
 
 response 

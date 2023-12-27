@@ -17,7 +17,7 @@ const engineerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  EMP_id: {
+  eng_emp: {
     type: String,
     required: true,
   },

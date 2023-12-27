@@ -59,16 +59,43 @@ query getEngineer {
 
 
 //-------GET ENGINEER BY EMP ID
-query getEngineerById($EMP_id: String!) {
-  engineer(EMP_id: $EMP_id) {
+query getEngineerById($eng_emp: String!) {
+  engineer(eng_emp: $eng_emp) {
     Fname
+    Lname
+    eng_emp
     email
   }
 }
 
 ### Variables
 {
-  "EMP_id": "857"
+  "eng_emp": "857"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+//-------GET ENGINEER BY OBJECT ID
+query GetEngineerByObjectId($_id: ID!){
+  engineerByObject(_id: $_id){
+    _id
+    Fname
+    Lname
+    contact
+    age
+    eng_emp
+    address
+    email
+    designation
+  }
+}
+
+### Variables
+{
+  "eng_emp": "857"
 }
 
 # CHECK AUTHORIZATION
@@ -83,7 +110,7 @@ query GetAllReports{
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -139,7 +166,7 @@ query GetReportById($_id: ID!){
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -200,7 +227,7 @@ query GetReportByCompany($company: String!){
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -261,7 +288,7 @@ query GetReportByEngineer($eng_emp: String!){
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -322,7 +349,7 @@ query GetReportByDate($date: String!){
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -388,7 +415,6 @@ query GetExpenseReportsByStatus($status: ExpenseStatus!){
     company_name
     company_location
     call_id
-    total_expense
     total_kilometer
     expense_amount
     isApprove
@@ -461,7 +487,7 @@ query getExpenseReportsByDate($date: String!){
 //-------GET EXPENSE REPORTS BY ENGINEER
 query ExpenseReportByEngineer($eng_emp: String!){
   expenseReportByEng(eng_emp: $eng_emp){
-    eng_id
+    eng_emp
     eng_name
     expense_list{
       date
@@ -471,7 +497,6 @@ query ExpenseReportByEngineer($eng_emp: String!){
       company_name
       company_location
       call_id
-      total_expense
       total_kilometer
       expense_amount
       isApprove
@@ -560,7 +585,7 @@ query GetCallsById($_id: ID!){
 //-------GET CALLS BY ENGINEER
 query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
   callsByEng(eng_emp: $eng_emp, status: $status) {
-    eng_id
+    eng_emp
     eng_name
     call_list {
       call_id
@@ -568,6 +593,7 @@ query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
       company_details
       company_location
       company_address
+      customer_contact
       assigned_date
       assigned_time
       submit_date

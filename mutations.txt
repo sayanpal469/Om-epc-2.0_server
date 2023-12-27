@@ -23,7 +23,7 @@ mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
     Lname
     contact
     age
-    EMP_id
+    eng_emp
     address
     email
     designation
@@ -38,7 +38,7 @@ mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
     "Lname": "dutta",
     "contact": "7872564125",
     "age": "24",
-    "EMP_id": "858",
+    "eng_emp": "858",
     "address": "kolkata",
     "email": "subho@gmail.com",
     "password": "123456",
@@ -77,7 +77,7 @@ mutation CreateReport($report: ReportInput!) {
     _id
     company_name
     call_id
-    emp_id
+    eng_emp
     complain_id
     date
     customer_name
@@ -125,7 +125,7 @@ mutation CreateReport($report: ReportInput!) {
   "report": {
     "company_name": "Your Company",
     "call_id": "123456",
-    "emp_id": "859",
+    "eng_emp": "859",
     "complain_id": "789012",
     "date": "2023-01-01",
     "customer_name": "John Doe",
@@ -234,20 +234,17 @@ mutation CreateExpenseReport($expenseReport: ExpenseReportInput!){
   "expenseReport": {
     "date": "2023-12-17",
     "time": "12:00 PM",
-    "eng_emp": "858",
-    "eng_name": "ayan",
+    "eng_emp": "859",
+    "eng_name": "Sayan",
     "company_name": "ABC Corp",
     "company_location": "Cityville",
     "call_id": "C123",
-    "total_expense": "500",
     "total_kilometer": "50",
     "expense_amount": "100",
-    "isApprove": false,
     "eng_desc": "Description from engineer",
     "admin_desc": "Admin's comment"
   }
 }
-
 
 # CHECK AUTHORIZATION
 {
@@ -427,6 +424,30 @@ mutation UpdateCallStatus($_id: ID!, $status: CallStatus!) {
 {
   "_id": "65827a05471ec7afa7cb6355",
   "status": "COMPLETED"
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+//-------RESCHEDULE Call
+mutation RescheduleCall($call: RescheduleInput!) {
+  rescheduleCall(call: $call) {
+    _id
+    visit_date
+  }
+}
+
+
+### Variables
+{
+  "call": {
+    "_id": "658c23ad980d74b6f4938e8b",
+    "visit_date": "30-12-2023",
+    "eng_desc": "kaje jabo na"
+  }
 }
 
 

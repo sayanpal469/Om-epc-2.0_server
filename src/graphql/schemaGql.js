@@ -80,7 +80,7 @@ const typeDefs = gql`
   input ReportInput {
     company_name: String
     call_id: String
-    emp_id: String
+    eng_emp: String
     complain_id: String
     date: String
     customer_name: String
@@ -130,7 +130,7 @@ const typeDefs = gql`
     _id: ID
     company_name: String
     call_id: String
-    emp_id: String
+    eng_emp: String
     complain_id: String
     date: String
     customer_name: String
@@ -172,7 +172,6 @@ const typeDefs = gql`
     company_name: String
     company_location: String
     call_id: String
-    total_expense: String
     total_kilometer: String
     expense_amount: String
     isApprove: ExpenseApproveEnum
@@ -189,7 +188,6 @@ const typeDefs = gql`
     company_name: String
     company_location: String
     call_id: String
-    total_expense: String
     total_kilometer: String
     expense_amount: String
     isApprove: ExpenseApproveEnum
@@ -199,7 +197,7 @@ const typeDefs = gql`
   }
 
   type EngineerExpense {
-    eng_id: String
+    eng_emp: String
     eng_name: String
     expense_list: [ExpenseDetails]
   }
@@ -212,7 +210,6 @@ const typeDefs = gql`
     company_name: String!
     company_location: String!
     call_id: String!
-    total_expense: String!
     total_kilometer: String!
     expense_amount: String!
     isApprove: ExpenseApproveEnum
@@ -227,7 +224,7 @@ const typeDefs = gql`
     Lname: String
     contact: String
     age: String
-    EMP_id: String
+    eng_emp: String
     address: String
     email: String
     password: String
@@ -239,7 +236,7 @@ const typeDefs = gql`
     Lname: String!
     contact: String!
     age: String!
-    EMP_id: String!
+    eng_emp: String!
     address: String!
     email: String!
     password: String!
@@ -276,7 +273,7 @@ const typeDefs = gql`
   }
 
   type EngineerCall {
-    eng_id: String
+    eng_emp: String
     eng_name: String
     call_list: [CallDetails]
   }
@@ -338,6 +335,12 @@ const typeDefs = gql`
     status: CallStatus
   }
 
+  input RescheduleInput {
+    _id: ID!
+    visit_date: String!
+    eng_desc: String!
+  }
+
   type CallDetails {
     call_id: String
     company_name: String
@@ -390,9 +393,10 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
-    user(email: String): User
+    user(email: String!): User
     engineers: [Engineer]
-    engineer(EMP_id: String): Engineer
+    engineer(eng_emp: String!): Engineer
+    engineerByObject(_id: ID!): Engineer
     admins: [Admin]
     admin(_id: ID!): Admin
     allReports: [Report]
@@ -434,6 +438,7 @@ const typeDefs = gql`
     createCall(call: CallInput!): Message
     editCall(call: CallInput!): Call
     updateCallStatus(_id: ID, status: CallStatus!): Call
+    rescheduleCall(call: RescheduleInput!): Call
     deleteCall(_id: ID!): Message
     submitAttendence(attendence: AttendenceInput!): SubmitAttendenceResponse
   }

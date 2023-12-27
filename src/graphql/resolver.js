@@ -46,18 +46,32 @@ const resolvers = {
       return engineers;
     },
 
-    engineer: async (_, { EMP_id }, { userId }) => {
+    engineer: async (_, { eng_emp }, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
 
-      const engineer = await Engineer.findOne({ EMP_id: EMP_id });
+      const engineer = await Engineer.findOne({ eng_emp: eng_emp });
 
       if (!engineer) throw new Error("Engineer not found");
 
       return engineer;
     },
+
+    engineerByObject: async (_, { _id }, { userId }) => {
+      if (!userId) {
+        // If the user is not authenticated (no token), throw an error
+        throw new Error("Authentication required");
+      }
+
+      const engineer = await Engineer.findOne({ _id: _id });
+
+      if (!engineer) throw new Error("Engineer not found");
+
+      return engineer;
+    },
+
     admins: async (_, __, { userId }) => {
       if (!userId) {
         // If the user is not authenticated (no token), throw an error
@@ -125,7 +139,7 @@ const resolvers = {
         // If the user is not authenticated (no token), throw an error
         throw new Error("Authentication required");
       }
-      const report = await Report.find({ emp_id: eng_emp });
+      const report = await Report.find({ eng_emp: eng_emp });
 
       if (!report || report.length === 0) throw new Error("Report not found");
 
@@ -201,7 +215,7 @@ const resolvers = {
       }
 
       const availableEngineer = await Engineer.findOne({
-        EMP_id: eng_emp,
+        eng_emp: eng_emp,
       });
 
       if (!availableEngineer) {
@@ -216,7 +230,7 @@ const resolvers = {
         throw new Error("Expense report not found");
 
       const engineerExpense = {
-        eng_id: eng_emp,
+        eng_emp: eng_emp,
         eng_name: expenseReports[0].eng_name,
         expense_list: expenseReports.map((expense) => ({
           date: expense.date,
@@ -226,7 +240,6 @@ const resolvers = {
           company_name: expense.company_name,
           company_location: expense.company_location,
           call_id: expense.call_id,
-          total_expense: expense.total_expense,
           total_kilometer: expense.total_kilometer,
           expense_amount: expense.expense_amount,
           isApprove: expense.isApprove,
@@ -284,14 +297,6 @@ const resolvers = {
         throw new Error("Authentication required");
       }
 
-      const availableEngineer = await Engineer.findOne({
-        EMP_id: eng_emp,
-      });
-
-      if (!availableEngineer) {
-        throw new Error("Engineer does not exist");
-      }
-
       let calls;
 
       if (status == "ALL") {
@@ -305,7 +310,7 @@ const resolvers = {
       if (!calls || calls.length === 0) throw new Error("Calls not found");
 
       const engineerCall = {
-        eng_id: eng_emp,
+        eng_emp: eng_emp,
         eng_name: calls[0].eng_name,
         call_list: calls.map((call) => ({
           call_id: call.call_id,
@@ -319,7 +324,8 @@ const resolvers = {
           visit_date: call.visit_date || "-",
           report: call.report || "-",
           status: call.status,
-          description: call.description,
+          eng_desc: call.eng_desc || "_",
+          admin_desc: call.admin_desc || "_",
         })),
       };
 
@@ -346,7 +352,7 @@ const resolvers = {
         throw new Error("Authentication required");
       }
 
-      const existingEng = await Engineer.findOne({ EMP_id: eng_emp });
+      const existingEng = await Engineer.findOne({ eng_emp: eng_emp });
 
       if (!existingEng) {
         throw new Error("Engineer not found");
@@ -364,7 +370,7 @@ const resolvers = {
         date: entry.date,
       }));
 
-      console.log(attendanceList);
+      // console.log(attendanceList);
 
       const response = {
         eng_name: checkAttendence[0].eng_name, // Assuming eng_name is the same for all entries
@@ -404,12 +410,12 @@ const resolvers = {
           await adminUser.save();
           return adminNew;
         } catch (error) {
-          console.error(error.message);
+          // console.error(error.message);
           throw new Error("Unable to save admin");
         }
       } catch (error) {
-        console.error("Error creating engineer:", error);
-        throw new Error("Unable to create admin");
+        // console.error("Error creating engineer:", error);
+        throw new Error("Error creating engineer:", error);
       }
     },
 
@@ -420,7 +426,9 @@ const resolvers = {
       }
       try {
         const existingEng = await Engineer.findOne({ email: engineer.email });
-        const existingEmp = await Engineer.findOne({ EMP_id: engineer.EMP_id });
+        const existingEmp = await Engineer.findOne({
+          eng_emp: engineer.eng_emp,
+        });
         const isAdmin = await Admin.findById(adminId);
 
         if (!isAdmin) {
@@ -455,7 +463,7 @@ const resolvers = {
           await engUser.save();
           return engNew;
         } catch (error) {
-          console.error(error.message);
+          // console.error(error.message);
           throw new Error("Unable to create engineer");
         }
       } catch (error) {
@@ -472,18 +480,20 @@ const resolvers = {
 
         // Use findByIdAndDelete to find and delete the report
         const deleteEngineer = await Engineer.findOneAndDelete({
-          EMP_id: eng_emp,
+          eng_emp: eng_emp,
         });
 
         if (!deleteEngineer) {
           throw new Error("Engineer does not exist");
+        } else {
+          await User.findOneAndDelete({ userId: deleteEngineer.userId });
         }
 
         return {
           message: "Engineer deleted successfully",
         };
       } catch (error) {
-        console.error("Error deleting engineer:", error.message);
+        // console.error("Error deleting engineer:", error.message);
         throw new Error(error.message);
       }
     },
@@ -581,7 +591,7 @@ const resolvers = {
             "Token has expired. Please generate a new reset password token."
           );
         } else {
-          console.error(err);
+          // console.error(err);
           throw new Error("Invalid token or password");
         }
       }
@@ -594,7 +604,7 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: report.emp_id,
+          eng_emp: report.eng_emp,
         });
 
         if (!availableEngineer) {
@@ -619,11 +629,11 @@ const resolvers = {
           await reportNew.save();
           return reportNew;
         } catch (error) {
-          console.error(error.message);
+          // console.error(error.message);
           throw new Error("Unable to save report");
         }
       } catch (error) {
-        console.error("Error creating report:", error.message);
+        // console.error("Error creating report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -636,7 +646,7 @@ const resolvers = {
 
         // Check if the engineer exists
         const availableEngineer = await Engineer.findOne({
-          EMP_id: report.engineer_EMP,
+          eng_emp: report.engineer_EMP,
         });
 
         if (!availableEngineer) {
@@ -665,7 +675,7 @@ const resolvers = {
 
         return updatedReport;
       } catch (error) {
-        console.error("Error updating report:", error.message);
+        // console.error("Error updating report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -689,7 +699,7 @@ const resolvers = {
           message: "Report deleted successfully",
         };
       } catch (error) {
-        console.error("Error deleting report:", error.message);
+        // console.error("Error deleting report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -701,7 +711,7 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: expenseReport.eng_emp,
+          eng_emp: expenseReport.eng_emp,
         });
 
         if (!availableEngineer) {
@@ -746,7 +756,7 @@ const resolvers = {
 
         // Check if the engineer exists
         const availableEngineer = await Engineer.findOne({
-          EMP_id: upExpReport.engineer_EMP,
+          eng_emp: upExpReport.engineer_EMP,
         });
 
         if (!availableEngineer) {
@@ -765,7 +775,6 @@ const resolvers = {
               company_name: upExpReport.company_name,
               company_location: upExpReport.company_location,
               call_id: upExpReport.call_id,
-              total_expense: upExpReport.total_expense,
               total_kilometer: upExpReport.total_kilometer,
               expense_amount: upExpReport.expense_amount,
               isApprove: upExpReport.isApprove,
@@ -782,7 +791,7 @@ const resolvers = {
 
         return updatedExpReport;
       } catch (error) {
-        console.error("Error updating report:", error.message);
+        // console.error("Error updating report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -833,7 +842,7 @@ const resolvers = {
 
         return reportStatus;
       } catch (error) {
-        console.error("Error approving report:", error.message);
+        // console.error("Error approving report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -857,7 +866,7 @@ const resolvers = {
           message: "Expense report deleted successfully",
         };
       } catch (error) {
-        console.error("Error deleting report:", error.message);
+        // console.error("Error deleting report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -869,7 +878,7 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: call.eng_emp,
+          eng_emp: call.eng_emp,
         });
 
         if (!availableEngineer) {
@@ -887,11 +896,11 @@ const resolvers = {
             message: "Call created",
           };
         } catch (error) {
-          console.error(error.message);
+          // console.error(error.message);
           throw new Error("Unable to create call");
         }
       } catch (error) {
-        console.error("Error creating call:", error.message);
+        // console.error("Error creating call:", error.message);
         throw new Error(error.message);
       }
     },
@@ -904,7 +913,7 @@ const resolvers = {
 
         // Check if the engineer exists
         const availableEngineer = await Engineer.findOne({
-          EMP_id: call.eng_emp,
+          eng_emp: call.eng_emp,
         });
 
         if (!availableEngineer) {
@@ -944,7 +953,7 @@ const resolvers = {
 
         return editedCall;
       } catch (error) {
-        console.error("Error updating call:", error.message);
+        // console.error("Error updating call:", error.message);
         throw new Error(error.message);
       }
     },
@@ -971,7 +980,35 @@ const resolvers = {
 
         return updateCallStatus;
       } catch (error) {
-        console.error("Error approving call:", error.message);
+        // console.error("Error approving call:", error.message);
+        throw new Error(error.message);
+      }
+    },
+
+    rescheduleCall: async (_, { call }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        const rescheduleCall = await Call.findOneAndUpdate(
+          { _id: call._id },
+          {
+            $set: {
+              visit_date: call.visit_date,
+              eng_desc: call.eng_desc,
+            },
+          },
+          { new: true }
+        );
+
+        if (!rescheduleCall) {
+          throw new Error("Call does not exist");
+        }
+
+        return rescheduleCall;
+      } catch (error) {
+        // console.error("Error approving call:", error.message);
         throw new Error(error.message);
       }
     },
@@ -995,7 +1032,7 @@ const resolvers = {
           message: "Call deleted successfully",
         };
       } catch (error) {
-        console.error("Error deleting call:", error.message);
+        // console.error("Error deleting call:", error.message);
         throw new Error(error.message);
       }
     },
@@ -1007,7 +1044,7 @@ const resolvers = {
         }
 
         const availableEngineer = await Engineer.findOne({
-          EMP_id: attendence.eng_emp,
+          eng_emp: attendence.eng_emp,
         });
 
         if (!availableEngineer) {
