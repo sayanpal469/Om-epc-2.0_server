@@ -43,6 +43,7 @@ mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
     "email": "subho@gmail.com",
     "password": "123456",
     "designation": "developer"
+    "eng_sign": "sDutta"
   },
   "adminId": "6558f3b80e48800b8d7749e9"
 }
@@ -70,9 +71,8 @@ mutation DeteleEngineer($eng_emp: String!){
 }
 
 
-
 //-------CREATE REPORT
-mutation CreateReport($report: ReportInput!) {
+mutation Mutation($report: ReportInput!) {
   createReport(report: $report) {
     _id
     company_name
@@ -80,7 +80,6 @@ mutation CreateReport($report: ReportInput!) {
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact
@@ -91,10 +90,28 @@ mutation CreateReport($report: ReportInput!) {
     product_slNo
     buy_back_details
     nature_of_complaint
-    ac_input_three_phase
-    ac_output_three_phase
-    ac_input_single_phase
-    ac_output_single_phase
+    ac_input_three_phase {
+      ac_input_three_phase_NR
+      ac_input_three_phase_RB
+      ac_input_three_phase_RY
+      ac_input_three_phase_YB
+    }
+    ac_output_three_phase {
+      ac_output_three_phase_NR
+      ac_output_three_phase_RB
+      ac_output_three_phase_RY
+      ac_output_three_phase_YB
+    }
+    ac_input_single_phase {
+      ac_input_singel_phase_LN
+      ac_input_singel_phase_NE
+      ac_input_three_phase_LE
+    }
+    ac_output_single_phase {
+      ac_input_singel_phase_LN
+      ac_input_singel_phase_NE
+      ac_input_three_phase_LE
+    }
     DC {
       V
       V_withMains
@@ -106,53 +123,73 @@ mutation CreateReport($report: ReportInput!) {
     battery_AH
     quantity
     battery_test_report {
-      battery_catch_code
-      with_mains
-      without_mains
-      after_5_min
       after_10_min
+      after_1_hour
       after_20_min
       after_40_min
-      after_1_hour
+      after_5_min
+      battery_catch_code
       signature
+      with_mains
+      without_mains
     }
-    signature
+    customer_sign
+    eng_sign
   }
 }
 
 ### Variables
 {
   "report": {
-    "company_name": "Your Company",
-    "call_id": "123456",
-    "eng_emp": "859",
-    "complain_id": "789012",
-    "date": "2023-01-01",
-    "customer_name": "John Doe",
-    "client_name": "ABC Corp",
-    "atm_id": "ATM123",
-    "contact": "1234567890",
-    "address": "123 Main Street",
+    "company_name": "abc",
+    "call_id": "112",
+    "eng_emp": "858",
+    "complain_id": "445",
+    "date": "29-12-2023",
+    "client_name": "modon mitra",
+    "atm_id": "atm123",
+    "contact": "7578954123",
+    "address": "kolkata",
     "site_type": "ONSITE",
-    "device_type": "UPS",
-    "product_make": "BrandX",
-    "product_slNo": "987654",
-    "buy_back_details": "Details",
-    "nature_of_complaint": "Power failure",
-    "ac_input_three_phase": "R_Y",
-    "ac_output_three_phase": "R_Y",
-    "ac_input_single_phase": "L_N",
-    "ac_output_single_phase": "L_N",
+    "work_type": "INSTALLATION",
+    "device_type": "SOLAR",
+    "product_make": "brandx",
+    "product_slNo": "843121",
+    "buy_back_details": "details",
+    "nature_of_complaint": "power failure",
+    "ac_input_three_phase": {
+      "ac_input_three_phase_RY": "",
+      "ac_input_three_phase_YB": "YB",
+      "ac_input_three_phase_RB": "RB",
+      "ac_input_three_phase_NR": ""
+    },
+    "ac_output_three_phase": {
+      "ac_output_three_phase_RY": "RY",
+      "ac_output_three_phase_YB": "YB",
+      "ac_output_three_phase_RB": "",
+      "ac_output_three_phase_NR": "NR"
+    },
+    "ac_input_single_phase": {
+      "ac_input_singel_phase_LN": "LN",
+      "ac_input_singel_phase_NE": "",
+      "ac_input_three_phase_LE": "LE"
+    },
+    "ac_output_single_phase": {
+      "ac_output_singel_phase_LN": "",
+      "ac_output_singel_phase_NE": "NE",
+      "ac_output_three_phase_LE": ""
+    },
     "DC": {
       "V": "24",
       "V_withMains": "28",
       "V_withoutMains": "25"
     },
+    "site_images": ["img1", "img2"],
     "power_cut": "Yes",
-    "battery_make": "BatteryBrand",
-    "battery_type": "Lithium-ion",
+    "battery_make": "battery",
+    "battery_type": "Lithium",
     "battery_AH": "100",
-    "quantity": "2",
+    "quantity": "10",
     "battery_test_report": {
       "battery_catch_code": "ABC123",
       "with_mains": "28",
@@ -162,11 +199,12 @@ mutation CreateReport($report: ReportInput!) {
       "after_20_min": "25",
       "after_40_min": "24",
       "after_1_hour": "23",
-      "signature": "John Doe"
     },
-    "signature": "Engineer Signature"
+    "customer_sign": "modon chor",
+    "eng_sign": "tuku police"
   }
 }
+
 
 # CHECK AUTHORIZATION
 {

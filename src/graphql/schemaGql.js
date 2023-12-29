@@ -37,6 +37,9 @@ const typeDefs = gql`
   enum SiteTypeEnum {
     ONSITE
     OFFSITE
+  }
+
+  enum WorkTypeEnum {
     WARRANTY
     AMC
     INSTALLATION
@@ -46,17 +49,30 @@ const typeDefs = gql`
     SERVICE
   }
 
-  enum ThreePhaseEnum {
-    R_Y
-    Y_B
-    R_B
-    N_R
+  input ThreeInputPhaseInput {
+    ac_input_three_phase_RY: String
+    ac_input_three_phase_YB: String
+    ac_input_three_phase_RB: String
+    ac_input_three_phase_NR: String
   }
 
-  enum SinglePhaseEnum {
-    L_N
-    N_E
-    L_E
+  input ThreeOutputPhaseInput {
+    ac_output_three_phase_RY: String
+    ac_output_three_phase_YB: String
+    ac_output_three_phase_RB: String
+    ac_output_three_phase_NR: String
+  }
+
+  input SingelInputPhaseInput {
+    ac_input_singel_phase_LN: String
+    ac_input_singel_phase_NE: String
+    ac_input_three_phase_LE: String
+  }
+
+  input SingelOutputPhaseInput {
+    ac_output_singel_phase_LN: String
+    ac_output_singel_phase_NE: String
+    ac_output_three_phase_LE: String
   }
 
   input DCInput {
@@ -83,29 +99,57 @@ const typeDefs = gql`
     eng_emp: String
     complain_id: String
     date: String
-    customer_name: String
     client_name: String
     atm_id: String
     contact: String
     address: String
     site_type: SiteTypeEnum
+    work_type: WorkTypeEnum
     device_type: DeviceTypeEnum
     product_make: String
     product_slNo: String
     buy_back_details: String
     nature_of_complaint: String
-    ac_input_three_phase: ThreePhaseEnum
-    ac_output_three_phase: ThreePhaseEnum
-    ac_input_single_phase: SinglePhaseEnum
-    ac_output_single_phase: SinglePhaseEnum
+    ac_input_three_phase: ThreeInputPhaseInput
+    ac_output_three_phase: ThreeOutputPhaseInput
+    ac_input_single_phase: SingelInputPhaseInput
+    ac_output_single_phase: SingelOutputPhaseInput
     DC: DCInput
+    site_images: [String]
     power_cut: String
     battery_make: String
     battery_type: String
     battery_AH: String
     quantity: String
     battery_test_report: BatteryTestReportInput
-    signature: String
+    customer_sign: String
+    eng_sign: String
+  }
+
+  type ThreeInputPhase {
+    ac_input_three_phase_RY: String
+    ac_input_three_phase_YB: String
+    ac_input_three_phase_RB: String
+    ac_input_three_phase_NR: String
+  }
+
+  type ThreeOutputPhase {
+    ac_output_three_phase_RY: String
+    ac_output_three_phase_YB: String
+    ac_output_three_phase_RB: String
+    ac_output_three_phase_NR: String
+  }
+
+  type SingelInputPhase {
+    ac_input_singel_phase_LN: String
+    ac_input_singel_phase_NE: String
+    ac_input_three_phase_LE: String
+  }
+
+  type SingelOutputPhase {
+    ac_output_singel_phase_LN: String
+    ac_output_singel_phase_NE: String
+    ac_output_three_phase_LE: String
   }
 
   type DCType {
@@ -133,7 +177,6 @@ const typeDefs = gql`
     eng_emp: String
     complain_id: String
     date: String
-    customer_name: String
     client_name: String
     atm_id: String
     contact: String
@@ -144,18 +187,20 @@ const typeDefs = gql`
     product_slNo: String
     buy_back_details: String
     nature_of_complaint: String
-    ac_input_three_phase: ThreePhaseEnum
-    ac_output_three_phase: ThreePhaseEnum
-    ac_input_single_phase: SinglePhaseEnum
-    ac_output_single_phase: SinglePhaseEnum
+    ac_input_three_phase: ThreeInputPhase
+    ac_output_three_phase: ThreeOutputPhase
+    ac_input_single_phase: SingelInputPhase
+    ac_output_single_phase: SingelInputPhase
     DC: DCType
+    site_images: [String]
     power_cut: String
     battery_make: String
     battery_type: String
     battery_AH: String
     quantity: String
     battery_test_report: BatteryTestReportType
-    signature: String
+    customer_sign: String
+    eng_sign: String
   }
 
   type SubmitExpenseResponse {
@@ -229,6 +274,7 @@ const typeDefs = gql`
     email: String
     password: String
     designation: String
+    eng_sign: String
   }
 
   input EngineerInput {
@@ -241,6 +287,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     designation: String
+    eng_sign: String!
   }
 
   type Admin {

@@ -1,0 +1,6 @@
+2023/12/29-21:49:36.442 4268 Reusing MANIFEST C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2023/12/29-21:49:36.443 4268 Recovering log #3
+2023/12/29-21:49:36.444 4268 Reusing old log C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2023/12/29-21:51:37.170 4268 Level-0 table #5: started
+2023/12/29-21:51:37.186 4268 Level-0 table #5: 19850 bytes OK
+2023/12/29-21:51:37.190 4268 Delete type=0 #3

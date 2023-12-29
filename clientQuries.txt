@@ -95,7 +95,7 @@ query GetEngineerByObjectId($_id: ID!){
 
 ### Variables
 {
-  "eng_emp": "857"
+  "_id": "857"
 }
 
 # CHECK AUTHORIZATION
@@ -113,7 +113,6 @@ query GetAllReports{
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact
@@ -169,7 +168,6 @@ query GetReportById($_id: ID!){
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact
@@ -230,7 +228,6 @@ query GetReportByCompany($company: String!){
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact
@@ -291,7 +288,6 @@ query GetReportByEngineer($eng_emp: String!){
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact
@@ -352,7 +348,6 @@ query GetReportByDate($date: String!){
     eng_emp
     complain_id
     date
-    customer_name
     client_name
     atm_id
     contact

@@ -37,6 +37,10 @@ const engineerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  eng_sign: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Engineer = mongoose.model("Engineer", engineerSchema);

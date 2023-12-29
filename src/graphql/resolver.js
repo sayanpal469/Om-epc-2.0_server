@@ -885,6 +885,14 @@ const resolvers = {
           throw new Error("Engineer does not exist");
         }
 
+        const existingCall = await Call.findOne({
+          call_id: call.call_id,
+        });
+
+        if (existingCall) {
+          throw new Error("This call id already exists");
+        }
+
         const callNew = new Call({
           ...call,
           eng_name: call.eng_name.toLowerCase(),
