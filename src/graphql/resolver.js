@@ -293,6 +293,7 @@ const resolvers = {
     },
 
     callsByEng: async (_, { eng_emp, status }, { userId }) => {
+      
       if (!userId) {
         throw new Error("Authentication required");
       }
@@ -307,14 +308,7 @@ const resolvers = {
         });
       }
 
-      if (!calls || calls.length === 0) {
-        const engineerCall = {
-          eng_emp: eng_emp,
-          eng_name: calls[0].eng_name,
-          call_list: [],
-        };
-        return engineerCall;
-      }
+      if (!calls || calls.length === 0) throw new Error("Calls not found");
 
       const engineerCall = {
         eng_emp: eng_emp,
