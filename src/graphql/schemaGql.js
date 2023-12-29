@@ -198,7 +198,7 @@ const typeDefs = gql`
     battery_type: String
     battery_AH: String
     quantity: String
-    battery_test_report: BatteryTestReportType
+    battery_test_report: [BatteryTestReportType]
     customer_sign: String
     eng_sign: String
   }
