@@ -91,9 +91,9 @@ const reportSchema = new mongoose.Schema(
       after_20_min: String,
       after_40_min: String,
       after_1_hour: String,
-      customer_sign: String,
-      eng_sign: String,
     },
+    customer_sign: String,
+    eng_sign: String,
   },
   {
     timestamps: true,
