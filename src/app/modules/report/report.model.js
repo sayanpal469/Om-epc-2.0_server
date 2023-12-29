@@ -7,6 +7,7 @@ const reportSchema = new mongoose.Schema(
     eng_emp: String,
     complain_id: String,
     date: String,
+    time: String,
     client_name: String,
     atm_id: String,
     contact: String,
