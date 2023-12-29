@@ -146,13 +146,13 @@ mutation Mutation($report: ReportInput!) {
     "eng_emp": "858",
     "complain_id": "445",
     "date": "29-12-2023",
-    "client_name": "modon mitra",
+    "client_name": "modon",
     "atm_id": "atm123",
     "contact": "7578954123",
     "address": "kolkata",
-    "site_type": "ONSITE",
-    "work_type": "INSTALLATION",
-    "device_type": "SOLAR",
+    "site_type": "Onsite",
+    "work_type": "Installation",
+    "device_type": "Solar",
     "product_make": "brandx",
     "product_slNo": "843121",
     "buy_back_details": "details",
@@ -170,14 +170,14 @@ mutation Mutation($report: ReportInput!) {
       "ac_output_three_phase_NR": "NR"
     },
     "ac_input_single_phase": {
-      "ac_input_singel_phase_LN": "LN",
-      "ac_input_singel_phase_NE": "",
-      "ac_input_three_phase_LE": "LE"
+      "ac_input_single_phase_LE": "LE",
+      "ac_input_single_phase_LN": "",
+      "ac_input_single_phase_NE": "NE"
     },
     "ac_output_single_phase": {
-      "ac_output_singel_phase_LN": "",
-      "ac_output_singel_phase_NE": "NE",
-      "ac_output_three_phase_LE": ""
+      "ac_output_single_phase_LE": "",
+      "ac_output_single_phase_LN": "LN",
+      "ac_output_single_phase_NE": "NE"
     },
     "DC": {
       "V": "24",
@@ -198,7 +198,7 @@ mutation Mutation($report: ReportInput!) {
       "after_10_min": "26",
       "after_20_min": "25",
       "after_40_min": "24",
-      "after_1_hour": "23",
+      "after_1_hour": "23"
     },
     "customer_sign": "modon chor",
     "eng_sign": "tuku police"

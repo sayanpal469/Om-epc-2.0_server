@@ -26,7 +26,7 @@ const reportSchema = new mongoose.Schema(
         "Chargeable",
         "PM",
         "Chargeable",
-        "Service"
+        "Service",
       ],
     },
     device_type: {
@@ -59,8 +59,8 @@ const reportSchema = new mongoose.Schema(
     },
     ac_input_single_phase: {
       ac_input_single_phase_LN: String,
-      ac_output_three_phase_NE: String,
-      ac_output_three_phase_LE: String,
+      ac_input_single_phase_NE: String,
+      ac_input_single_phase_LE: String,
     },
     ac_output_single_phase: {
       ac_output_single_phase_LN: String,

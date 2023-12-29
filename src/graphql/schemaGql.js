@@ -61,16 +61,16 @@ const typeDefs = gql`
     ac_output_three_phase_NR: String
   }
 
-  input SingelInputPhaseInput {
-    ac_input_singel_phase_LN: String
-    ac_input_singel_phase_NE: String
-    ac_input_three_phase_LE: String
+  input SingleInputPhaseInput {
+    ac_input_single_phase_LN: String
+    ac_input_single_phase_NE: String
+    ac_input_single_phase_LE: String
   }
 
-  input SingelOutputPhaseInput {
-    ac_output_singel_phase_LN: String
-    ac_output_singel_phase_NE: String
-    ac_output_three_phase_LE: String
+  input SingleOutputPhaseInput {
+    ac_output_single_phase_LN: String
+    ac_output_single_phase_NE: String
+    ac_output_single_phase_LE: String
   }
 
   input DCInput {
@@ -111,8 +111,8 @@ const typeDefs = gql`
     nature_of_complaint: String
     ac_input_three_phase: ThreeInputPhaseInput
     ac_output_three_phase: ThreeOutputPhaseInput
-    ac_input_single_phase: SingelInputPhaseInput
-    ac_output_single_phase: SingelOutputPhaseInput
+    ac_input_single_phase: SingleInputPhaseInput
+    ac_output_single_phase: SingleOutputPhaseInput
     DC: DCInput
     site_images: [String]
     power_cut: String
