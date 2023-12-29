@@ -23,30 +23,28 @@ const typeDefs = gql`
   }
 
   enum DeviceTypeEnum {
-    UPS
-    UPS_BATTERY
-    INVERTER
-    INVERTER_BATTERY
-    STABILIZER
-    SOLAR
-    COMPUTER
-    PRINTER
+    Ups_Battery
+    Inverter_Battery
+    Stabilizer
+    Solar
+    Computer
+    Printer
     CCTV
   }
 
   enum SiteTypeEnum {
-    ONSITE
-    OFFSITE
+    Onsite
+    Offsite
   }
 
   enum WorkTypeEnum {
-    WARRANTY
+    Warrenty
     AMC
-    INSTALLATION
-    SITE_INSPECTION
-    CHARGEABLE
+    Installation
+    SiteInspection
+    Chargeable
     PM
-    SERVICE
+    Service
   }
 
   input ThreeInputPhaseInput {
