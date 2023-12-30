@@ -260,9 +260,9 @@ mutation DeleteReport($_id: ID!) {
 }
 
 //-------CREATE EXPENSE REPORT
-mutation CreateExpenseReport($expenseReport: ExpenseReportInput!){
-  createExpenseReport(expenseReport: $expenseReport){
-  call_id
+mutation CreateExpenseReport($expenseReport: ExpenseReportInput!) {
+  createExpenseReport(expenseReport: $expenseReport) {
+    call_id
     message
   }
 }
@@ -270,17 +270,16 @@ mutation CreateExpenseReport($expenseReport: ExpenseReportInput!){
 ### Variables
 {
   "expenseReport": {
-    "date": "2023-12-17",
-    "time": "12:00 PM",
-    "eng_emp": "859",
-    "eng_name": "Sayan",
-    "company_name": "ABC Corp",
-    "company_location": "Cityville",
-    "call_id": "C123",
-    "total_kilometer": "50",
-    "expense_amount": "100",
-    "eng_desc": "Description from engineer",
-    "admin_desc": "Admin's comment"
+     "eng_emp": "858",
+    "eng_name": "tuku pal",
+    "company_name": "tata",
+    "company_location": "kolkata",
+    "total_kilometer": "120km",
+    "time": "11-45am",
+    "date": "30-12-2023",
+    "expense_amount": "550",
+    "eng_desc": "hello palas",
+    "call_id": "hdfc/01/ups/2023"
   }
 }
 
@@ -325,19 +324,25 @@ mutation updateExpenseReport($upExpReport: ExpenseReportInput!) {
 
 
 //-------APPROVE EXPENSE REPORT
-mutation ApproveExpenseReport($_id: ID!, $approveStatus: ExpenseApproveEnum!, $admin_desc: String) {
-  status: approveExpenseReport(_id: $_id, approveStatus: $approveStatus, admin_desc: $admin_desc) {
-    _id
+mutation ApproveExpenseReport(
+  $callId: String!
+  $approveStatus: ExpenseApproveEnum!
+  $admin_desc: String
+) {
+  approveExpenseReport(call_id: $callId, approveStatus: $approveStatus, admin_desc: $admin_desc) {
     isApprove
+    status
+    call_id
     admin_desc
   }
 }
 
+
 ### Variables
 {
-  "_id": "65846c2a2459eb3d5e774afe",
-  "approveStatus": "APPROVE",
-  "admin_desc": "taka debo na, bari jao" // [only for reject report]
+  "approveStatus": "REJECT",
+  "callId": "01",
+  "admin_desc": "taka debo na"
 }
 
 # CHECK AUTHORIZATION

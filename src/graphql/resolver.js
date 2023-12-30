@@ -388,6 +388,7 @@ const resolvers = {
         }
 
         const qr = await generateQRCode();
+        // console.log(qr);
         return qr;
       } catch (error) {
         throw new Error("Failed to generate QR code");
@@ -732,11 +733,19 @@ const resolvers = {
         }
 
         const existingReport = await ExpenseReport.findOne({
-          _id: expenseReport._id,
+          call_id: expenseReport.call_id,
         });
 
         if (existingReport) {
           throw new Error("This report has already been created");
+        }
+
+        const existsCallId = await Call.findOne({
+          call_id: expenseReport.call_id,
+        });
+
+        if (!existsCallId) {
+          throw new Error("Call id does not exist");
         }
 
         const reportNew = new ExpenseReport({
@@ -811,7 +820,7 @@ const resolvers = {
 
     approveExpenseReport: async (
       _,
-      { _id, approveStatus, admin_desc },
+      { call_id, approveStatus, admin_desc },
       { userId }
     ) => {
       try {
@@ -819,38 +828,66 @@ const resolvers = {
           throw new Error("Authentication required");
         }
 
-        const existsReport = await ExpenseReport.findById(_id);
+        const existsReport = await ExpenseReport.findOne({ call_id: call_id });
+
+        const existsCallId = await Call.findOne({ call_id: call_id });
 
         if (!existsReport) {
           throw new Error("Expense report does not exist");
         }
 
+        const expenseReport = await ExpenseReport.findOne({ call_id: call_id });
+
         let reportStatus;
 
-        if (approveStatus == "APPROVE") {
-          reportStatus = await ExpenseReport.findOneAndUpdate(
-            { _id: _id },
-            {
-              $set: {
-                isApprove: approveStatus,
-                status: approveStatus,
-                admin_desc: "Report approved",
+        if (existsCallId) {
+          if (approveStatus == "APPROVE") {
+            reportStatus = await ExpenseReport.findOneAndUpdate(
+              { call_id: call_id },
+              {
+                $set: {
+                  isApprove: approveStatus,
+                  status: approveStatus,
+                  admin_desc: "Report approved",
+                },
               },
-            },
-            { new: true }
-          );
-        } else if (approveStatus == "REJECT") {
-          reportStatus = await ExpenseReport.findOneAndUpdate(
-            { _id: _id },
-            {
-              $set: {
-                isApprove: approveStatus,
-                status: approveStatus,
-                admin_desc: admin_desc,
+              { new: true }
+            );
+
+            await Call.findOneAndUpdate(
+              { call_id: call_id },
+              {
+                $set: {
+                  expense_amount: expenseReport.expense_amount,
+                },
               },
-            },
-            { new: true }
-          );
+              { new: true }
+            );
+          } else if (approveStatus == "REJECT") {
+            reportStatus = await ExpenseReport.findOneAndUpdate(
+              { call_id: call_id },
+              {
+                $set: {
+                  isApprove: approveStatus,
+                  status: approveStatus,
+                  admin_desc: admin_desc,
+                },
+              },
+              { new: true }
+            );
+
+            await Call.findOneAndUpdate(
+              { call_id: call_id },
+              {
+                $set: {
+                  expense_amount: "",
+                },
+              },
+              { new: true }
+            );
+          }
+        } else {
+          throw new Error("Call id does not exist");
         }
 
         return reportStatus;
@@ -1122,7 +1159,7 @@ const resolvers = {
           time: attendence.time,
           eng_name: attendence.eng_name.toLowerCase(),
         });
-        console.log(submitedAttendence)
+        console.log(submitedAttendence);
         try {
           await submitedAttendence.save();
           const response = {
@@ -1130,7 +1167,7 @@ const resolvers = {
             eng_emp: attendence.eng_emp,
             message: "Successfully log in",
           };
-          
+
           return response;
         } catch (error) {
           console.error(error.message);

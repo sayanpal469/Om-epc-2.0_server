@@ -21,9 +21,11 @@ export const client = new Client({
   authStrategy: new LocalAuth(),
 });
 
-export const generateQRCode = async () => {
-  client.on("qr", (qr) => {
-    return qr;
+export const generateQRCode = () => {
+  return new Promise((resolve, reject) => {
+    client.on("qr", (qr) => {
+      resolve(qr);
+    });
   });
 };
 

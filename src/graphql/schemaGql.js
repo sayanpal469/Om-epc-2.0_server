@@ -479,7 +479,7 @@ const typeDefs = gql`
     ): SubmitExpenseResponse
     updateExpenseReport(upExpReport: ExpenseReportInput!): ExpenseReport
     approveExpenseReport(
-      _id: ID!
+      call_id: String!
       approveStatus: ExpenseApproveEnum!
       admin_desc: String
     ): ExpenseReport
