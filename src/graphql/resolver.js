@@ -642,11 +642,11 @@ const resolvers = {
           await reportNew.save();
           return reportNew;
         } catch (error) {
-          // console.error(error.message);
+          console.error(error.message);
           throw new Error("Unable to save report");
         }
       } catch (error) {
-        // console.error("Error creating report:", error.message);
+        console.error("Error creating report:", error.message);
         throw new Error(error.message);
       }
     },
@@ -953,7 +953,7 @@ const resolvers = {
               eng_name: call.eng_name,
               assigned_date: call.assigned_date,
               assigned_time: call.assigned_time,
-              description: call.description,
+              admin_desc: call.admin_desc,
               call_id: call.call_id,
               customer_contact: call.customer_contact,
               submit_date:
@@ -975,6 +975,50 @@ const resolvers = {
         return editedCall;
       } catch (error) {
         // console.error("Error updating call:", error.message);
+        throw new Error(error.message);
+      }
+    },
+
+    editCall_by_Admin: async (_, { call }) => {
+      try {
+        const existingCall = await Call.findOne({ call_id: call.call_id });
+
+        if (!existingCall) {
+          throw new Error("Call does not exist");
+        }
+
+        const editedCall = await Call.findOneAndUpdate(
+          { call_id: call.call_id },
+          {
+            $set: {
+              company_name: call.company_name,
+              company_details: call.company_details,
+              company_location: call.company_location,
+              company_address: call.company_address,
+              eng_name: call.eng_name,
+              eng_emp: call.eng_emp,
+              assigned_date: call.assigned_date,
+              assigned_time: call.assigned_time,
+              admin_desc: call.admin_desc,
+              customer_contact: call.customer_contact,
+              submit_date:
+                call.submit_date === "-" ? undefined : call.submit_date,
+              visit_date:
+                call.visit_date === "-" ? undefined : call.submit_date,
+              completed: call.completed,
+              expense_amount: call.expense_amount.split(" | ")[0], // Extracting the value before " | "
+              report: call.report === "-" ? undefined : call.report,
+            },
+          },
+          { new: true }
+        );
+
+        if (!editedCall) {
+          throw new Error("Error updating call");
+        }
+
+        return editedCall;
+      } catch (error) {
         throw new Error(error.message);
       }
     },
@@ -1074,9 +1118,11 @@ const resolvers = {
 
         const submitedAttendence = new Attendence({
           ...attendence,
+          date: attendence.date,
+          time: attendence.time,
           eng_name: attendence.eng_name.toLowerCase(),
         });
-
+        console.log(submitedAttendence)
         try {
           await submitedAttendence.save();
           const response = {
@@ -1084,10 +1130,11 @@ const resolvers = {
             eng_emp: attendence.eng_emp,
             message: "Successfully log in",
           };
+          
           return response;
         } catch (error) {
-          // console.error(error.message);
-          throw new Error("Unable to save expenses report");
+          console.error(error.message);
+          throw new Error("Unable to save attendence");
         }
       } catch (error) {
         // console.error("Error creating expense report:", error.message);

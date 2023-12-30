@@ -88,7 +88,6 @@ const typeDefs = gql`
     after_20_min: String
     after_40_min: String
     after_1_hour: String
-    signature: String
   }
 
   input ReportInput {
@@ -120,7 +119,7 @@ const typeDefs = gql`
     battery_type: String
     battery_AH: String
     quantity: String
-    battery_test_report: BatteryTestReportInput
+    battery_test_report: [BatteryTestReportInput]
     customer_sign: String
     eng_sign: String
   }
@@ -140,15 +139,15 @@ const typeDefs = gql`
   }
 
   type SingelInputPhase {
-    ac_input_singel_phase_LN: String
-    ac_input_singel_phase_NE: String
-    ac_input_three_phase_LE: String
+    ac_input_single_phase_LN: String
+    ac_input_single_phase_NE: String
+    ac_input_single_phase_LE: String
   }
 
   type SingelOutputPhase {
-    ac_output_singel_phase_LN: String
-    ac_output_singel_phase_NE: String
-    ac_output_three_phase_LE: String
+    ac_output_single_phase_LN: String
+    ac_output_single_phase_NE: String
+    ac_output_single_phase_LE: String
   }
 
   type DCType {
@@ -166,7 +165,6 @@ const typeDefs = gql`
     after_20_min: String
     after_40_min: String
     after_1_hour: String
-    signature: String
   }
 
   type Report {
@@ -190,7 +188,7 @@ const typeDefs = gql`
     ac_input_three_phase: ThreeInputPhase
     ac_output_three_phase: ThreeOutputPhase
     ac_input_single_phase: SingelInputPhase
-    ac_output_single_phase: SingelInputPhase
+    ac_output_single_phase: SingelOutputPhase
     DC: DCType
     site_images: [String]
     power_cut: String
@@ -351,7 +349,8 @@ const typeDefs = gql`
     eng_emp: String!
     assigned_date: String!
     assigned_time: String!
-    description: String!
+    eng_desc: String!
+    admin_desc: String!
     call_id: String!
     customer_contact: String!
     submit_date: String
@@ -371,7 +370,6 @@ const typeDefs = gql`
     eng_emp: String!
     assigned_date: String!
     assigned_time: String!
-    description: String!
     call_id: String!
     customer_contact: String!
     submit_date: String
@@ -380,6 +378,8 @@ const typeDefs = gql`
     expense_amount: String
     report: String
     status: CallStatus
+    eng_desc: String!
+    admin_desc: String!
   }
 
   input RescheduleInput {
@@ -399,9 +399,10 @@ const typeDefs = gql`
     submit_date: String
     visit_date: String
     customer_contact: String
+    eng_desc: String!
+    admin_desc: String!
     report: String
     status: CallStatus
-    description: String
   }
 
   type Attendence {
@@ -434,8 +435,8 @@ const typeDefs = gql`
     date: String!
     eng_name: String!
     eng_emp: String!
-    time: String!
-    location: String!
+    time: String
+    location: String
   }
 
   type Query {
@@ -485,6 +486,7 @@ const typeDefs = gql`
     deleteExpReport(_id: ID!): Message
     createCall(call: CallInput!): Message
     editCall(call: CallInput!): Call
+    editCall_by_Admin(call: CallInput!): Call
     updateCallStatus(_id: ID, status: CallStatus!): Call
     rescheduleCall(call: RescheduleInput!): Call
     deleteCall(_id: ID!): Message

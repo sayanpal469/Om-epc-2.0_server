@@ -5,8 +5,8 @@ const attendenceSchema = new mongoose.Schema(
     date: { type: String, required: true },
     eng_name: { type: String, required: true },
     eng_emp: { type: String, required: true },
-    time: { type: String, required: true },
-    location: { type: String, required: true },
+    time: { type: String,  },
+    location: { type: String,  },
   },
   { timestamps: true }
 );
