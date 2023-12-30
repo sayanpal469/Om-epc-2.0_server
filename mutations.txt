@@ -270,7 +270,7 @@ mutation CreateExpenseReport($expenseReport: ExpenseReportInput!) {
 ### Variables
 {
   "expenseReport": {
-     "eng_emp": "858",
+    "eng_emp": "858",
     "eng_name": "tuku pal",
     "company_name": "tata",
     "company_location": "kolkata",
