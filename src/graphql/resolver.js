@@ -243,6 +243,7 @@ const resolvers = {
           total_kilometer: expense.total_kilometer,
           expense_amount: expense.expense_amount,
           isApprove: expense.isApprove,
+          status: expense.status,
           eng_desc: expense.eng_desc,
           admin_desc: expense.admin_desc,
         })),
