@@ -829,13 +829,13 @@ const resolvers = {
           throw new Error("Authentication required");
         }
 
-        const existsReport = await ExpenseReport.findOne({ call_id: call_id });
+        // const existsReport = await ExpenseReport.findOne({ call_id: call_id });
 
         const existsCallId = await Call.findOne({ call_id: call_id });
 
-        if (existsReport) {
-          throw new Error("Expense report already exist");
-        }
+        // if (existsReport) {
+        //   throw new Error("Expense report already exist");
+        // }
 
         const expenseReport = await ExpenseReport.findOne({ call_id: call_id });
 

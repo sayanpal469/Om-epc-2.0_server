@@ -1,7 +1,14 @@
-[1230/225544.165:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
-[1230/225544.166:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
-[1230/225544.166:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
-[1230/225544.166:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
-[1230/225544.166:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
-[1230/225552.861:INFO:CONSOLE(215)] "Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.", source: https://web.whatsapp.com/serviceworker.js (215)
-[1230/225552.862:INFO:CONSOLE(215)] "Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.", source: https://web.whatsapp.com/serviceworker.js (215)
+[1230/232045.974:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[1230/232045.975:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\GPUCache to C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\old_GPUCache_000
+[1230/232045.975:ERROR:disk_cache.cc(192)] Unable to create cache
+[1230/232045.975:ERROR:shader_disk_cache.cc(612)] Shader Cache Creation failed: -2
+[1230/232047.542:ERROR:cache_util_win.cc(20)] Unable to move the cache: Access is denied. (0x5)
+[1230/232047.543:ERROR:cache_util.cc(146)] Unable to move cache folder C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\Cache\Cache_Data to C:\Freelance projects\Om-Epc 2.0\server\.wwebjs_auth\session\Default\Cache\old_Cache_Data_000
+[1230/232047.543:ERROR:disk_cache.cc(192)] Unable to create cache
+[1230/232049.348:ERROR:quota_database.cc(823)] Could not open the quota database, resetting.
+[1230/232052.525:ERROR:quota_database.cc(825)] Failed to reset the quota database.
+[1230/232052.758:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[1230/232052.758:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[1230/232052.758:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'gamepad'.", source:  (0)
+[1230/232052.758:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'local-fonts'.", source:  (0)
+[1230/232052.759:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
