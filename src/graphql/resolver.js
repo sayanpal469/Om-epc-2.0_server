@@ -4,11 +4,11 @@ import { Engineer } from "../app/modules/engineer/engineer.model.js";
 import { User } from "../app/modules/user/user.model.js";
 import bcrypt from "bcrypt";
 import config from "../config/index.js";
-import generateRandomNumber from "../utils/randomNum.js";
 import { Report } from "../app/modules/report/report.model.js";
 import { ExpenseReport } from "../app/modules/expenseReport/expenseReport.model.js";
 import { Call } from "../app/modules/call/call.model.js";
 import { Attendence } from "../app/modules/attendence/attendence.model.js";
+import { client, generateQRCode } from "../server.js";
 
 const resolvers = {
   Query: {
@@ -293,7 +293,6 @@ const resolvers = {
     },
 
     callsByEng: async (_, { eng_emp, status }, { userId }) => {
-      
       if (!userId) {
         throw new Error("Authentication required");
       }
@@ -380,6 +379,19 @@ const resolvers = {
       };
 
       return response;
+    },
+
+    getQRCode: async (_, __, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        const qr = await generateQRCode();
+        return qr;
+      } catch (error) {
+        throw new Error("Failed to generate QR code");
+      }
     },
   },
 
@@ -1080,6 +1092,25 @@ const resolvers = {
       } catch (error) {
         // console.error("Error creating expense report:", error.message);
         throw new Error(error.message);
+      }
+    },
+
+    sendPdf: async (_, { pdf_link, customer_num }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        let response;
+
+        client.on("ready", async () => {
+          const chatId = customer_num.substring(1) + "@c.us";
+          response = await client.sendMessage(chatId, pdf_link);
+        });
+
+        return `Pdf sent successfully: ${JSON.stringify(response)}`;
+      } catch (error) {
+        throw new Error("Failed to send message");
       }
     },
   },

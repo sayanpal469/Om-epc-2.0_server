@@ -460,6 +460,7 @@ const typeDefs = gql`
     callsByEng(eng_emp: String!, status: CallStatus!): EngineerCall
     callsByDate(date: String): [Call]
     getAttendenceByEng(eng_emp: String!): GetAttendenceResponse
+    getQRCode: String
   }
 
   type Mutation {
@@ -488,6 +489,7 @@ const typeDefs = gql`
     rescheduleCall(call: RescheduleInput!): Call
     deleteCall(_id: ID!): Message
     submitAttendence(attendence: AttendenceInput!): SubmitAttendenceResponse
+    sendPdf(pdf_link: String!, customer_num: String!): String
   }
 `;
 
