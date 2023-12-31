@@ -1095,7 +1095,7 @@ const resolvers = {
         }
 
         const rescheduleCall = await Call.findOneAndUpdate(
-          { _id: call._id },
+          { call_id: call.call_id },
           {
             $set: {
               visit_date: call.visit_date,

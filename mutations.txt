@@ -478,7 +478,7 @@ mutation UpdateCallStatus($_id: ID!, $status: CallStatus!) {
 //-------RESCHEDULE Call
 mutation RescheduleCall($call: RescheduleInput!) {
   rescheduleCall(call: $call) {
-    _id
+    call_id
     visit_date
   }
 }
@@ -487,9 +487,9 @@ mutation RescheduleCall($call: RescheduleInput!) {
 ### Variables
 {
   "call": {
-    "_id": "658c23ad980d74b6f4938e8b",
-    "visit_date": "30-12-2023",
-    "eng_desc": "kaje jabo na"
+    "call_id": "test/1",
+    "eng_desc": "pore kaj korbo",
+    "visit_date": "02-01-2024"
   }
 }
 

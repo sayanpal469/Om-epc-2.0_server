@@ -578,8 +578,8 @@ query GetCallsById($_id: ID!){
 }
 
 //-------GET CALLS BY ENGINEER
-query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
-  callsByEng(eng_emp: $eng_emp, status: $status) {
+query CallsByEng($engEmp: String!, $status: CallStatus!) {
+  callsByEng(eng_emp: $engEmp, status: $status) {
     eng_emp
     eng_name
     call_list {
@@ -593,7 +593,6 @@ query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
       assigned_time
       submit_date
       report
-      description
     }
   }
 }
@@ -601,7 +600,7 @@ query GetCallsByEngineer($eng_emp: String!, $status: CallStatus!) {
 
 ### Variables
 {
-  "eng_emp": "858",
+  "engEmp": "102",
   "status": "ALL"
 }
 

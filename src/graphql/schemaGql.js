@@ -383,7 +383,7 @@ const typeDefs = gql`
   }
 
   input RescheduleInput {
-    _id: ID!
+    call_id: String!
     visit_date: String!
     eng_desc: String!
   }
