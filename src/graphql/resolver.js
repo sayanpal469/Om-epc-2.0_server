@@ -493,15 +493,14 @@ const resolvers = {
           throw new Error("Authentication required");
         }
 
-        // Use findByIdAndDelete to find and delete the report
-        const deleteEngineer = await Engineer.findOneAndDelete({
-          eng_emp: eng_emp,
-        });
+        const existingEng = await Engineer.findOne({ eng_emp: eng_emp });
 
-        if (!deleteEngineer) {
+        console.log(existingEng._id);
+
+        if (!existingEng) {
           throw new Error("Engineer does not exist");
         } else {
-          await User.findOneAndDelete({ userId: deleteEngineer.userId });
+          await User.findOneAndDelete({ engineer: existingEng._id });
           await Engineer.findOneAndDelete({ eng_emp: eng_emp });
         }
 
