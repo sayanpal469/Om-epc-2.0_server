@@ -9,25 +9,25 @@ import resolvers from "./graphql/resolver.js";
 import connectDB from "./database.js";
 import config from "./config/index.js";
 import jwt from "jsonwebtoken";
-import { createReadStream } from "fs";
-import { resolve } from "path";
-import qrCode from "qrcode-terminal";
-import Whatsapp from "whatsapp-web.js";
-const { Client, LocalAuth } = Whatsapp;
+// import { createReadStream } from "fs";
+// import { resolve } from "path";
+// import qrCode from "qrcode-terminal";
+// import Whatsapp from "whatsapp-web.js";
+// const { Client, LocalAuth } = Whatsapp;
 
 connectDB();
 
-export const client = new Client({
-  authStrategy: new LocalAuth(),
-});
+// export const client = new Client({
+//   authStrategy: new LocalAuth(),
+// });
 
-export const generateQRCode = () => {
-  return new Promise((resolve, reject) => {
-    client.on("qr", (qr) => {
-      resolve(qr);
-    });
-  });
-};
+// export const generateQRCode = () => {
+//   return new Promise((resolve, reject) => {
+//     client.on("qr", (qr) => {
+//       resolve(qr);
+//     });
+//   });
+// };
 
 const context = async ({ req }) => {
   const { authorization } = req.headers;
@@ -54,7 +54,7 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
 });
 
-client.initialize();
+// client.initialize();
 
 server.listen().then(({ url }) => {
   console.log(`Server ready at ${url}`);
