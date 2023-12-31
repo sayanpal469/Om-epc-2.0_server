@@ -502,6 +502,7 @@ const resolvers = {
           throw new Error("Engineer does not exist");
         } else {
           await User.findOneAndDelete({ userId: deleteEngineer.userId });
+          await Engineer.findOneAndDelete({ eng_emp: eng_emp });
         }
 
         return {
@@ -738,7 +739,7 @@ const resolvers = {
         });
 
         if (existingReport) {
-          throw new Error("This report has already been created");
+          throw new Error("This report has been already created");
         }
 
         const existsCallId = await Call.findOne({
