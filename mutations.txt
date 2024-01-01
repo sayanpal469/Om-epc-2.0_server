@@ -423,6 +423,47 @@ mutation CreateCall($call: CallInput!) {
 }
 
 
+//-------UPDATE CALL BY ENGINEER
+mutation Mutation($callId: String!, $engEmp: String!, $updateCall: UpdateCallInput!) {
+  updateCallByEng(call_id: $callId, eng_emp: $engEmp, updateCall: $updateCall) {
+    _id
+    admin_desc
+    assigned_date
+    assigned_time
+    call_id
+    company_address
+    company_details
+    company_location
+    company_name
+    completed
+    customer_contact
+    eng_desc
+    eng_name
+    expense_amount
+    report
+    status
+    submit_date
+    visit_date
+  }
+}
+
+### Variables
+{
+  "callId": "n",
+  "engEmp": "110",
+  "updateCall": {
+    "report": "hoye gache",
+    "status": "COMPLETED",
+    "submit_date": "01-01-2024"
+  }
+}
+
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
 //-------EDIT CALL
 mutation EditCall($call: CallInput!){
   editCall(call: $call) {

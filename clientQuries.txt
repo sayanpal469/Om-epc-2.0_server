@@ -280,8 +280,8 @@ query GetReportByCompany($company: String!){
 
 
 //-------GET REPORT BY ENGINEER
-query GetReportByEngineer($eng_emp: String!){
-  reportByEngineer(eng_emp: $eng_emp) {
+query Query($engEmp: String!) {
+  reportByEngineer(eng_emp: $engEmp) {
     _id
     company_name
     call_id
@@ -298,10 +298,28 @@ query GetReportByEngineer($eng_emp: String!){
     product_slNo
     buy_back_details
     nature_of_complaint
-    ac_input_three_phase
-    ac_output_three_phase
-    ac_input_single_phase
-    ac_output_single_phase
+    ac_input_three_phase {
+      ac_input_three_phase_NR
+      ac_input_three_phase_RB
+      ac_input_three_phase_RY
+      ac_input_three_phase_YB
+    }
+    ac_output_three_phase {
+      ac_output_three_phase_NR
+      ac_output_three_phase_RB
+      ac_output_three_phase_RY
+      ac_output_three_phase_YB
+    }
+    ac_input_single_phase {
+      ac_input_single_phase_LE
+      ac_input_single_phase_LN
+      ac_input_single_phase_NE
+    }
+    ac_output_single_phase {
+      ac_output_single_phase_LE
+      ac_output_single_phase_LN
+      ac_output_single_phase_NE
+    }
     DC {
       V
       V_withMains
@@ -321,9 +339,11 @@ query GetReportByEngineer($eng_emp: String!){
       after_20_min
       after_40_min
       after_1_hour
-      signature
     }
-    signature
+    eng_sign
+    customer_sign
+    time
+    site_images
   }
 }
 

@@ -361,6 +361,12 @@ const typeDefs = gql`
     status: CallStatus
   }
 
+  input UpdateCallInput {
+    submit_date: String!
+    status: CallStatus!
+    report: String!
+  }
+
   input CallInput {
     company_name: String!
     company_details: String!
@@ -461,7 +467,7 @@ const typeDefs = gql`
     callsByEng(eng_emp: String!, status: CallStatus!): EngineerCall
     callsByDate(date: String): [Call]
     getAttendenceByEng(eng_emp: String!): GetAttendenceResponse
-    # getQRCode: String
+    getQRCode: String
   }
 
   type Mutation {
@@ -485,13 +491,17 @@ const typeDefs = gql`
     ): ExpenseReport
     deleteExpReport(_id: ID!): Message
     createCall(call: CallInput!): Message
-    editCall(call: CallInput!): Call
+    updateCallByEng(
+      call_id: String!
+      eng_emp: String!
+      updateCall: UpdateCallInput!
+    ): Call
     editCall_by_Admin(call: CallInput!): Call
     updateCallStatus(_id: ID, status: CallStatus!): Call
     rescheduleCall(call: RescheduleInput!): Call
     deleteCall(_id: ID!): Message
     submitAttendence(attendence: AttendenceInput!): SubmitAttendenceResponse
-    # sendPdf(pdf_link: String!, customer_num: String!): String
+    sendPdf(pdf_link: String!, customer_num: String!): String
   }
 `;
 

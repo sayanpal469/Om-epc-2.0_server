@@ -8,7 +8,7 @@ import { Report } from "../app/modules/report/report.model.js";
 import { ExpenseReport } from "../app/modules/expenseReport/expenseReport.model.js";
 import { Call } from "../app/modules/call/call.model.js";
 import { Attendence } from "../app/modules/attendence/attendence.model.js";
-// import { client, generateQRCode } from "../server.js";
+import { client, generateQRCode } from "../server.js";
 
 const resolvers = {
   Query: {
@@ -382,19 +382,19 @@ const resolvers = {
       return response;
     },
 
-    // getQRCode: async (_, __, { userId }) => {
-    //   try {
-    //     if (!userId) {
-    //       throw new Error("Authentication required");
-    //     }
+    getQRCode: async (_, __, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
 
-    //     const qr = await generateQRCode();
-    //     // console.log(qr);
-    //     return qr;
-    //   } catch (error) {
-    //     throw new Error("Failed to generate QR code");
-    //   }
-    // },
+        const qr = await generateQRCode();
+        // console.log(qr);
+        return qr;
+      } catch (error) {
+        throw new Error("Failed to generate QR code");
+      }
+    },
   },
 
   Mutation: {
@@ -964,7 +964,7 @@ const resolvers = {
       }
     },
 
-    editCall: async (_, { call }, { userId }) => {
+    updateCallByEng: async (_, { call_id, eng_emp, updateCall }, { userId }) => {
       try {
         if (!userId) {
           throw new Error("Authentication required");
@@ -972,47 +972,42 @@ const resolvers = {
 
         // Check if the engineer exists
         const availableEngineer = await Engineer.findOne({
-          eng_emp: call.eng_emp,
+          eng_emp: eng_emp,
         });
 
         if (!availableEngineer) {
           throw new Error("Engineer does not exist");
         }
 
-        // Use findByIdAndUpdate to find and update the report
-        const editedCall = await Call.findOneAndUpdate(
-          { _id: call._id },
+        const existingCall = await Call.findOne({
+          call_id: call_id,
+          eng_emp: eng_emp,
+        });
+
+        if (!existingCall) {
+          throw new Error("Call does not exist");
+        }
+
+
+        if (existingCall.completed) {
+          throw new Error("Call is already completed");
+        }
+
+        const updatedCall = await Call.findOneAndUpdate(
+          { call_id: call_id, eng_emp: eng_emp },
           {
             $set: {
-              company_name: call.company_name,
-              company_details: call.company_details,
-              company_location: call.company_location,
-              company_address: call.company_address,
-              eng_name: call.eng_name,
-              assigned_date: call.assigned_date,
-              assigned_time: call.assigned_time,
-              admin_desc: call.admin_desc,
-              call_id: call.call_id,
-              customer_contact: call.customer_contact,
-              submit_date:
-                call.submit_date === "-" ? undefined : call.submit_date,
-              visit_date:
-                call.visit_date === "-" ? undefined : call.submit_date,
-              completed: call.completed,
-              expense_amount: call.expense_amount.split(" | ")[0], // Extracting the value before " | "
-              report: call.report === "-" ? undefined : call.report,
+              status: updateCall.status,
+              submit_date: updateCall.submit_date,
+              completed: true,
+              report: updateCall.report,
             },
           },
           { new: true }
         );
 
-        if (!editedCall) {
-          throw new Error("Call does not exist");
-        }
-
-        return editedCall;
+        return updatedCall;
       } catch (error) {
-        // console.error("Error updating call:", error.message);
         throw new Error(error.message);
       }
     },
@@ -1180,24 +1175,24 @@ const resolvers = {
       }
     },
 
-    // sendPdf: async (_, { pdf_link, customer_num }, { userId }) => {
-    //   try {
-    //     if (!userId) {
-    //       throw new Error("Authentication required");
-    //     }
+    sendPdf: async (_, { pdf_link, customer_num }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
 
-    //     let response;
+        let response;
 
-    //     client.on("ready", async () => {
-    //       const chatId = customer_num.substring(1) + "@c.us";
-    //       response = await client.sendMessage(chatId, pdf_link);
-    //     });
+        client.on("ready", async () => {
+          const chatId = customer_num.substring(1) + "@c.us";
+          response = await client.sendMessage(chatId, pdf_link);
+        });
 
-    //     return `Pdf sent successfully: ${JSON.stringify(response)}`;
-    //   } catch (error) {
-    //     throw new Error("Failed to send message");
-    //   }
-    // },
+        return `Pdf sent successfully: ${JSON.stringify(response)}`;
+      } catch (error) {
+        throw new Error("Failed to send message");
+      }
+    },
   },
 };
 
