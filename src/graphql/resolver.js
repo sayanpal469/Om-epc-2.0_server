@@ -633,20 +633,18 @@ const resolvers = {
 
         if (existingReport) {
           throw new Error("This report has been already created");
-        }
+        } else {
+          const reportNew = new Report({
+            ...report,
+          });
 
-        // const makeCreatedId = generateRandomNumber(100, 999);
-
-        const reportNew = new Report({
-          ...report,
-        });
-
-        try {
-          await reportNew.save();
-          return reportNew;
-        } catch (error) {
-          console.error(error.message);
-          throw new Error("Unable to save report");
+          try {
+            await reportNew.save();
+            return reportNew;
+          } catch (error) {
+            console.error(error.message);
+            throw new Error("Unable to save report");
+          }
         }
       } catch (error) {
         console.error("Error creating report:", error.message);
