@@ -390,7 +390,7 @@ const resolvers = {
         }
 
         const qr = await generateQRCode();
-        // console.log(qr);
+        console.log(qr);
         return qr;
       } catch (error) {
         throw new Error("Failed to generate QR code");

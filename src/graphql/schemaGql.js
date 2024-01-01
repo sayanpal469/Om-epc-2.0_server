@@ -180,6 +180,7 @@ const typeDefs = gql`
     contact: String
     address: String
     site_type: SiteTypeEnum
+    work_type: WorkTypeEnum
     device_type: DeviceTypeEnum
     product_make: String
     product_slNo: String

@@ -687,7 +687,7 @@ query GetAttendenceByEngineer($eng_emp: String!){
 
 
 //-------GET QR CODE
-query Query {
+query GetQrCode {
   code: getQRCode
 }
 
