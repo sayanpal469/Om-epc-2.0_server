@@ -636,7 +636,6 @@ const resolvers = {
         await newReport.save();
         return newReport;
       } catch (error) {
-        // console.error("Error creating report:", error.message);
         throw new Error("Unable to create report");
       }
     },
