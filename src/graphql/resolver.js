@@ -320,6 +320,7 @@ const resolvers = {
           company_location: call.company_location,
           company_address: call.company_address,
           assigned_date: call.assigned_date,
+          customer_contact: call.customer_contact,
           assigned_time: call.assigned_time,
           submit_date: call.submit_date || "-",
           visit_date: call.visit_date || "-",
