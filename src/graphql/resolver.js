@@ -613,33 +613,33 @@ const resolvers = {
       }
     },
 
-    // createReport: async (_, { report }, { userId }) => {
-    //   try {
-    //     if (!userId) {
-    //       throw new Error("Authentication required");
-    //     }
+    createReport: async (_, { report }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
     
-    //     const availableEngineer = await Engineer.findOne({ eng_emp: report.eng_emp });
+        const availableEngineer = await Engineer.findOne({ eng_emp: report.eng_emp });
     
-    //     if (!availableEngineer) {
-    //       throw new Error("Engineer does not exist");
-    //     }
+        if (!availableEngineer) {
+          throw new Error("Engineer does not exist");
+        }
     
-    //     const existingReport = await Report.findOne({ call_id: report.call_id });
+        const existingReport = await Report.findOne({ call_id: report.call_id });
     
-    //     if (existingReport) {
-    //       throw new Error("This report has already been created");
-    //     }
+        if (existingReport) {
+          throw new Error("This report has already been created");
+        }
     
-    //     const newReport = new Report({ ...report });
+        const newReport = new Report({ ...report });
     
-    //     await newReport.save();
-    //     return newReport;
-    //   } catch (error) {
-    //     console.error("Error creating report:", error.message);
-    //     throw new Error("Unable to create report");
-    //   }
-    // },
+        await newReport.save();
+        return newReport;
+      } catch (error) {
+        console.error("Error creating report:", error.message);
+        throw new Error("Unable to create report");
+      }
+    },
     
 
     editReport: async (_, { report }, { userId }) => {
