@@ -627,13 +627,13 @@ const resolvers = {
           throw new Error("Engineer does not exist");
         }
 
-        // const existingReport = await Report.findOne({
-        //   _id: report._id,
-        // });
+        const existingReport = await Report.findOne({
+          call_id: report.call_id,
+        });
 
-        // if (existingReport) {
-        //   throw new Error("This report has already been created");
-        // }
+        if (existingReport) {
+          throw new Error("This report has been already created");
+        }
 
         // const makeCreatedId = generateRandomNumber(100, 999);
 
