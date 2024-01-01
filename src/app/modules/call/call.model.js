@@ -10,13 +10,18 @@ const callSchema = new mongoose.Schema(
     eng_emp: { type: String, required: true },
     assigned_date: { type: String, required: true },
     assigned_time: { type: String, required: true },
-    eng_desc: { type: String,  default: "_" },
+    eng_desc: { type: String, default: "_" },
     admin_desc: { type: String, default: "_" },
     call_id: { type: String, required: true },
     customer_contact: { type: String, required: true },
     submit_date: { type: String, default: "-" },
     visit_date: { type: String, default: "-" },
     completed: { type: Boolean, default: false },
+    site_images: [
+      {
+        type: String,
+      },
+    ],
     expense_amount: { type: String, default: "-" },
     report: { type: String, default: "-" },
     status: {

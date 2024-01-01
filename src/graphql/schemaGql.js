@@ -357,6 +357,7 @@ const typeDefs = gql`
     submit_date: String
     visit_date: String
     completed: Boolean
+    site_images: [String]
     expense_amount: String
     report: String
     status: CallStatus
@@ -382,6 +383,7 @@ const typeDefs = gql`
     submit_date: String
     visit_date: String
     completed: Boolean
+    site_images: [String]
     expense_amount: String
     report: String
     status: CallStatus
@@ -468,7 +470,7 @@ const typeDefs = gql`
     callsByEng(eng_emp: String!, status: CallStatus!): EngineerCall
     callsByDate(date: String): [Call]
     getAttendenceByEng(eng_emp: String!): GetAttendenceResponse
-    getQRCode: String
+    # getQRCode: String
   }
 
   type Mutation {
@@ -502,7 +504,7 @@ const typeDefs = gql`
     rescheduleCall(call: RescheduleInput!): Call
     deleteCall(_id: ID!): Message
     submitAttendence(attendence: AttendenceInput!): SubmitAttendenceResponse
-    sendPdf(pdf_link: String!, customer_num: String!): String
+    # sendPdf(pdf_link: String!, customer_num: String!): String
   }
 `;
 

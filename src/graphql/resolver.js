@@ -8,7 +8,7 @@ import { Report } from "../app/modules/report/report.model.js";
 import { ExpenseReport } from "../app/modules/expenseReport/expenseReport.model.js";
 import { Call } from "../app/modules/call/call.model.js";
 import { Attendence } from "../app/modules/attendence/attendence.model.js";
-import { client, generateQRCode } from "../server.js";
+// import { client, generateQRCode } from "../server.js";
 
 const resolvers = {
   Query: {
@@ -383,19 +383,19 @@ const resolvers = {
       return response;
     },
 
-    getQRCode: async (_, __, { userId }) => {
-      try {
-        if (!userId) {
-          throw new Error("Authentication required");
-        }
+    // getQRCode: async (_, __, { userId }) => {
+    //   try {
+    //     if (!userId) {
+    //       throw new Error("Authentication required");
+    //     }
 
-        const qr = await generateQRCode();
-        console.log(qr);
-        return qr;
-      } catch (error) {
-        throw new Error("Failed to generate QR code");
-      }
-    },
+    //     const qr = await generateQRCode();
+    //     // console.log(qr);
+    //     return qr;
+    //   } catch (error) {
+    //     throw new Error("Failed to generate QR code");
+    //   }
+    // },
   },
 
   Mutation: {
@@ -965,7 +965,11 @@ const resolvers = {
       }
     },
 
-    updateCallByEng: async (_, { call_id, eng_emp, updateCall }, { userId }) => {
+    updateCallByEng: async (
+      _,
+      { call_id, eng_emp, updateCall },
+      { userId }
+    ) => {
       try {
         if (!userId) {
           throw new Error("Authentication required");
@@ -989,9 +993,16 @@ const resolvers = {
           throw new Error("Call does not exist");
         }
 
-
         if (existingCall.completed) {
           throw new Error("Call is already completed");
+        }
+
+        const exitingReport = await Report.findOne({
+          call_id: call_id,
+        });
+
+        if (!existingCall) {
+          throw new Error("Report does not exist");
         }
 
         const updatedCall = await Call.findOneAndUpdate(
@@ -1002,6 +1013,7 @@ const resolvers = {
               submit_date: updateCall.submit_date,
               completed: true,
               report: updateCall.report,
+              site_images: exitingReport.site_images,
             },
           },
           { new: true }
@@ -1176,24 +1188,24 @@ const resolvers = {
       }
     },
 
-    sendPdf: async (_, { pdf_link, customer_num }, { userId }) => {
-      try {
-        if (!userId) {
-          throw new Error("Authentication required");
-        }
+    // sendPdf: async (_, { pdf_link, customer_num }, { userId }) => {
+    //   try {
+    //     if (!userId) {
+    //       throw new Error("Authentication required");
+    //     }
 
-        let response;
+    //     await new Promise((resolve) => {
+    //       client.on("ready", resolve);
+    //     });
 
-        client.on("ready", async () => {
-          const chatId = customer_num.substring(1) + "@c.us";
-          response = await client.sendMessage(chatId, pdf_link);
-        });
+    //     const chatId = customer_num.substring(1) + "@c.us";
+    //     const response = await client.sendMessage(chatId, pdf_link);
 
-        return `Pdf sent successfully: ${JSON.stringify(response)}`;
-      } catch (error) {
-        throw new Error("Failed to send message");
-      }
-    },
+    //     return `Pdf sent successfully: ${response}`;
+    //   } catch (error) {
+    //     throw new Error("Failed to send message");
+    //   }
+    // },
   },
 };
 
