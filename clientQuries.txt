@@ -684,3 +684,14 @@ query GetAttendenceByEngineer($eng_emp: String!){
 {
   "authorization": "yourTokenHere"
 }
+
+
+//-------GET QR CODE
+query Query {
+  code: getQRCode
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
