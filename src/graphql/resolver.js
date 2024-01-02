@@ -547,70 +547,94 @@ const resolvers = {
       return { token };
     },
 
-    forgotPassword: async (_, { email }) => {
-      const user = await User.findOne({ email });
+    // forgotPassword: async (_, { email }) => {
+    //   const user = await User.findOne({ email });
+
+    //   if (!user) {
+    //     throw new Error("User not found");
+    //   }
+
+    //   // Generate a unique reset password token and set an expiration time
+    //   const resetPasswordToken = jwt.sign(
+    //     { userId: user._id },
+    //     config.jwt_secret,
+    //     { expiresIn: "1h" }
+    //   );
+
+    //   // Log the token (remove this in production)
+    //   // console.log("Reset Password Token:", resetPasswordToken);
+
+    //   // Send the reset password token to the user via email or other means
+
+    //   return {
+    //     token: resetPasswordToken,
+    //     message: "Password reset token sent",
+    //   };
+    // },
+
+    resetPassword: async (_, { email, password }) => {
+      const user = await User.findOne({ email: email });
+      // console.log(user);
 
       if (!user) {
         throw new Error("User not found");
       }
 
-      // Generate a unique reset password token and set an expiration time
-      const resetPasswordToken = jwt.sign(
-        { userId: user._id },
-        config.jwt_secret,
-        { expiresIn: "1h" }
-      );
+      if (!password) {
+        throw new Error("New password is required");
+      }
 
-      // Log the token (remove this in production)
-      // console.log("Reset Password Token:", resetPasswordToken);
-
-      // Send the reset password token to the user via email or other means
-
-      return {
-        token: resetPasswordToken,
-        message: "Password reset token sent",
-      };
-    },
-
-    resetPassword: async (_, { newPassword }, { userId }) => {
-      try {
-        if (!userId) {
-          throw new Error("Authentication required");
-        }
-
-        const user = await User.findById(userId);
-
-        if (!user) {
-          throw new Error("User not found");
-        }
-
-        if (!newPassword) {
-          throw new Error("New password is required");
-        }
-
-        // Hash the new password and update the user's password
-        const hashedPassword = await bcrypt.hash(newPassword, 12);
-        user.password = hashedPassword;
-
-        // Save the updated user document
-        await user.save();
-
-        // Generate a new token for the user and return it
-        const newToken = jwt.sign({ userId: user._id }, config.jwt_secret, {
-          expiresIn: "1h",
-        });
-
-        return { token: newToken };
-      } catch (err) {
-        if (err.name === "TokenExpiredError") {
-          throw new Error(
-            "Token has expired. Please generate a new reset password token."
+      if (user) {
+        if (user.role == "Admin") {
+          await Admin.findOneAndUpdate(
+            { email: email },
+            {
+              $set: {
+                password: await bcrypt.hash(password, 12),
+              },
+            },
+            {
+              new: true,
+            }
           );
-        } else {
-          // console.error(err);
-          throw new Error("Invalid token or password");
+          await User.findOneAndUpdate(
+            { email: email },
+            {
+              $set: {
+                password: await bcrypt.hash(password, 12),
+              },
+            },
+            {
+              new: true,
+            }
+          );
+        } else if (user.role == "Engineer") {
+          await Engineer.findOneAndUpdate(
+            { email: email },
+            {
+              $set: {
+                password: await bcrypt.hash(password, 12),
+              },
+            },
+            {
+              new: true,
+            }
+          );
+          await User.findOneAndUpdate(
+            { email: email },
+            {
+              $set: {
+                password: await bcrypt.hash(password, 12),
+              },
+            },
+            {
+              new: true,
+            }
+          );
         }
       }
+
+      return "Password changed successfully";
     },
 
     createReport: async (_, { report }, { userId }) => {
@@ -618,28 +642,31 @@ const resolvers = {
         if (!userId) {
           throw new Error("Authentication required");
         }
-    
-        const availableEngineer = await Engineer.findOne({ eng_emp: report.eng_emp });
-    
+
+        const availableEngineer = await Engineer.findOne({
+          eng_emp: report.eng_emp,
+        });
+
         if (!availableEngineer) {
           throw new Error("Engineer does not exist");
         }
-    
-        const existingReport = await Report.findOne({ call_id: report.call_id });
-    
+
+        const existingReport = await Report.findOne({
+          call_id: report.call_id,
+        });
+
         if (existingReport) {
           throw new Error("This report has already been created");
         }
-    
+
         const newReport = new Report({ ...report });
-    
+
         await newReport.save();
         return newReport;
       } catch (error) {
         throw new Error("Unable to create report");
       }
     },
-    
 
     editReport: async (_, { report }, { userId }) => {
       try {

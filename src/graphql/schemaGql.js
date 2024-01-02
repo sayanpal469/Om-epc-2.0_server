@@ -309,10 +309,10 @@ const typeDefs = gql`
     token: String
   }
 
-  type ForgotPassword {
-    token: String
-    message: String
-  }
+  # type ForgotPassword {
+  #   token: String
+  #   message: String
+  # }
 
   type Message {
     message: String
@@ -335,10 +335,10 @@ const typeDefs = gql`
     password: String!
   }
 
-  input ResetPasswordInput {
-    # token: String!
-    newPassword: String!
-  }
+  # input ResetPasswordInput {
+  #   email: String!
+  #   password: String!
+  # }
 
   type Call {
     _id: ID
@@ -448,6 +448,8 @@ const typeDefs = gql`
     location: String
   }
 
+  scalar SuccessMessage
+
   type Query {
     users: [User]
     user(email: String!): User
@@ -478,8 +480,8 @@ const typeDefs = gql`
     createEngineer(engineer: EngineerInput!, adminId: ID!): Engineer
     deleteEngineer(eng_emp: String!): Message
     loginUser(userLogin: LoginInput!): Token
-    forgotPassword(email: String!): ForgotPassword
-    resetPassword(resetPassword: ResetPasswordInput!): Token
+    # forgotPassword(email: String!): ForgotPassword
+    resetPassword(email: String!, password: String!): SuccessMessage
     createReport(report: ReportInput!): Report
     editReport(report: ReportInput!): Report
     deleteReport(_id: ID!): Message
