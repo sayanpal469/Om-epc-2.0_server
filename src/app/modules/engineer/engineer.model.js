@@ -39,7 +39,7 @@ const engineerSchema = new mongoose.Schema({
   },
   eng_sign: {
     type: String,
-    required: true,
+    default: "_"
   },
 });
 

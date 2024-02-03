@@ -10,6 +10,7 @@ const expenseReportSchema = new mongoose.Schema(
     total_kilometer: { type: String, required: true },
     time: { type: String, required: true },
     date: { type: String, required: true },
+    others: { type: String },
     expense_amount: { type: String, required: true },
     isApprove: {
       type: String,

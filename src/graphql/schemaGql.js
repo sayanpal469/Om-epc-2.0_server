@@ -478,6 +478,7 @@ const typeDefs = gql`
   type Mutation {
     createAdmin(admin: AdminInput!): Admin
     createEngineer(engineer: EngineerInput!, adminId: ID!): Engineer
+    updateSign(eng_emp: String!, eng_sign: String!): Engineer
     deleteEngineer(eng_emp: String!): Message
     loginUser(userLogin: LoginInput!): Token
     # forgotPassword(email: String!): ForgotPassword

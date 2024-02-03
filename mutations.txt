@@ -53,6 +53,25 @@ mutation CreateEngineer($engineer: EngineerInput!, $adminId: ID!){
   "authorization": "yourTokenHere"
 }
 
+//-------UPDATE SIGN
+mutation UpdateSign($eng_emp: String!, $eng_sign: String!) {
+  updateSign(eng_emp: $eng_emp, eng_sign: $eng_sign) {
+    eng_sign
+  }
+}
+
+
+### Variables
+{
+  "eng_emp": "859",
+  "eng_sign": "sayan"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
 //-------DELETE ENGINEER
 mutation DeteleEngineer($eng_emp: String!){
   deleteEngineer(eng_emp: $eng_emp) {

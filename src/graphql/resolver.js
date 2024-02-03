@@ -488,6 +488,33 @@ const resolvers = {
       }
     },
 
+    updateSign: async (_, { eng_emp, eng_sign }, { userId }) => {
+      try {
+        if (!userId) {
+          throw new Error("Authentication required");
+        }
+
+        const updateSign = await Engineer.findOneAndUpdate(
+          { eng_emp: eng_emp },
+          {
+            $set: {
+              eng_sign: eng_sign,
+            },
+          },
+          { new: true }
+        );
+
+        if (!updateSign) {
+          throw new Error("Engineer does not exist");
+        }
+
+        return updateSign;
+      } catch (error) {
+        // console.error("Error approving call:", error.message);
+        throw new Error(error.message);
+      }
+    },
+
     deleteEngineer: async (_, { eng_emp }, { userId }) => {
       try {
         if (!userId) {
