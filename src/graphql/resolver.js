@@ -309,7 +309,7 @@ const resolvers = {
       }
 
       if (!calls || calls.length === 0) throw new Error("Calls not found");
-      console.log(calls)
+      console.log(calls);
 
       const engineerCall = {
         eng_emp: eng_emp,
@@ -482,7 +482,7 @@ const resolvers = {
           return engNew;
         } catch (error) {
           // console.error(error.message);
-          throw new Error("Unable to create engineer");
+          throw new Error({ message: error.message });
         }
       } catch (error) {
         // console.error("Error creating engineer:", error);
