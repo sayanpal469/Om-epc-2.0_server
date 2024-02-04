@@ -309,6 +309,7 @@ const resolvers = {
       }
 
       if (!calls || calls.length === 0) throw new Error("Calls not found");
+      console.log(calls)
 
       const engineerCall = {
         eng_emp: eng_emp,
@@ -324,6 +325,7 @@ const resolvers = {
           assigned_time: call.assigned_time,
           submit_date: call.submit_date || "-",
           visit_date: call.visit_date || "-",
+          work_type: call.work_type || "-",
           report: call.report || "-",
           status: call.status,
           eng_desc: call.eng_desc || "_",
@@ -997,7 +999,7 @@ const resolvers = {
             message: "Call created",
           };
         } catch (error) {
-          // console.error(error.message);
+          console.error(error.message);
           throw new Error("Unable to create call");
         }
       } catch (error) {

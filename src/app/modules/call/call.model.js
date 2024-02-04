@@ -21,6 +21,7 @@ const callSchema = new mongoose.Schema(
         "Chargeable",
         "PM",
         "Service",
+        "Installation"
       ],
     },
     call_id: { type: String, required: true },

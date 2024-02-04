@@ -385,6 +385,7 @@ const typeDefs = gql`
     completed: Boolean
     site_images: [String]
     expense_amount: String
+    work_type: String!
     report: String
     status: CallStatus
     eng_desc: String!
@@ -412,6 +413,7 @@ const typeDefs = gql`
     admin_desc: String!
     report: String
     status: CallStatus
+    work_type:String
   }
 
   type Attendence {
