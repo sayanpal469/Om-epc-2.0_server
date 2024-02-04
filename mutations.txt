@@ -289,8 +289,8 @@ mutation CreateExpenseReport($expenseReport: ExpenseReportInput!) {
 ### Variables
 {
   "expenseReport": {
-    "eng_emp": "858",
-    "eng_name": "tuku pal",
+    "eng_emp": "859",
+    "eng_name": "sayan pal",
     "company_name": "tata",
     "company_location": "kolkata",
     "total_kilometer": "120km",
@@ -298,7 +298,8 @@ mutation CreateExpenseReport($expenseReport: ExpenseReportInput!) {
     "date": "30-12-2023",
     "expense_amount": "550",
     "eng_desc": "hello palas",
-    "call_id": "hdfc/01/ups/2023"
+    "call_id": "000",
+    "others": "sss"
   }
 }
 

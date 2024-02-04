@@ -847,6 +847,7 @@ const resolvers = {
               isApprove: upExpReport.isApprove,
               eng_desc: upExpReport.eng_desc,
               admin_desc: upExpReport.admin_desc,
+              others: upExpReport.others,
             },
           },
           { new: true }

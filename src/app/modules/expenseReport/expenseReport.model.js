@@ -24,7 +24,6 @@ const expenseReportSchema = new mongoose.Schema(
     },
     eng_desc: { type: String, required: true },
     admin_desc: { type: String, default: "_" },
-    others: { type: String },
   },
   { timestamps: true }
 );
