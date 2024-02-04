@@ -287,7 +287,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     designation: String
-    eng_sign: String!
+    eng_sign: String
   }
 
   type Admin {
