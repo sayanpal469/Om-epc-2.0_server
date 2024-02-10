@@ -254,7 +254,7 @@ const typeDefs = gql`
     eng_name: String!
     company_name: String!
     company_location: String!
-    call_id: String!
+    call_id: String
     others: String
     total_kilometer: String!
     expense_amount: String!
