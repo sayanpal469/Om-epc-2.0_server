@@ -216,6 +216,7 @@ const typeDefs = gql`
     company_name: String
     company_location: String
     call_id: String
+    others: String
     total_kilometer: String
     expense_amount: String
     isApprove: ExpenseApproveEnum
@@ -472,6 +473,7 @@ const typeDefs = gql`
     expenseReportByEng(eng_emp: String!): EngineerExpense
     callsByStatus(status: String!): [Call]
     call(_id: ID!): Call
+    getCallByIdCallId(call_id: String!): Call
     callsByEng(eng_emp: String!, status: CallStatus!): EngineerCall
     callsByDate(date: String): [Call]
     getAttendenceByEng(eng_emp: String!): GetAttendenceResponse

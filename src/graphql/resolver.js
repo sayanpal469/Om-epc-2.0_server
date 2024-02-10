@@ -293,6 +293,19 @@ const resolvers = {
       return call;
     },
 
+    getCallByIdCallId: async (_, { call_id }, { userId }) => {
+      if (!userId) {
+        // If the user is not authenticated (no token), throw an error
+        throw new Error("Authentication required");
+      }
+
+      const call = await Call.findOne({ call_id: call_id });
+
+      if (!call) throw new Error("Call not found");
+
+      return call;
+    },
+
     callsByEng: async (_, { eng_emp, status }, { userId }) => {
       if (!userId) {
         throw new Error("Authentication required");
@@ -693,7 +706,7 @@ const resolvers = {
         await newReport.save();
         return newReport;
       } catch (error) {
-        throw new Error("Unable to create report");
+        throw new Error(error.message);
       }
     },
 
