@@ -790,21 +790,21 @@ const resolvers = {
           throw new Error("Engineer does not exist");
         }
 
-        const existingReport = await ExpenseReport.findOne({
-          call_id: expenseReport.call_id,
-        });
+        // const existingReport = await ExpenseReport.findOne({
+        //   call_id: expenseReport.call_id,
+        // });
 
-        if (existingReport) {
-          throw new Error("This report has been already created");
-        }
+        // if (existingReport) {
+        //   throw new Error("This report has been already created");
+        // }
 
-        const existsCallId = await Call.findOne({
-          call_id: expenseReport.call_id,
-        });
+        // const existsCallId = await Call.findOne({
+        //   call_id: expenseReport.call_id,
+        // });
 
-        if (!existsCallId) {
-          throw new Error("Call id does not exist");
-        }
+        // if (!existsCallId) {
+        //   throw new Error("Call id does not exist");
+        // }
 
         const reportNew = new ExpenseReport({
           ...expenseReport,
@@ -814,13 +814,13 @@ const resolvers = {
         try {
           await reportNew.save();
           const response = {
-            call_id: reportNew.call_id,
+            // call_id: reportNew.call_id,
             message: "Expense report submitted",
           };
           return response;
         } catch (error) {
           // console.error(error.message);
-          throw new Error("Unable to save expenses report");
+          throw new Error("Unable to save expenses report", error.message);
         }
       } catch (error) {
         // console.error("Error creating expense report:", error.message);
