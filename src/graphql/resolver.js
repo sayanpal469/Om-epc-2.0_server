@@ -811,6 +811,8 @@ const resolvers = {
           eng_name: expenseReport.eng_name.toLowerCase(),
         });
 
+        console.log(reportNew);
+
         try {
           await reportNew.save();
           const response = {
@@ -818,8 +820,9 @@ const resolvers = {
             message: "Expense report submitted",
           };
           return response;
+          console.log(response);
         } catch (error) {
-          // console.error(error.message);
+          console.error(error);
           throw new Error("Unable to save expenses report", error.message);
         }
       } catch (error) {

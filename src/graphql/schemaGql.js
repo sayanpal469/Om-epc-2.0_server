@@ -203,7 +203,7 @@ const typeDefs = gql`
   }
 
   type SubmitExpenseResponse {
-    # call_id: String
+    call_id: String
     message: String
   }
 
