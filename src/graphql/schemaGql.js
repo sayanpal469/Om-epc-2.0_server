@@ -247,6 +247,12 @@ const typeDefs = gql`
     expense_list: [ExpenseDetails]
   }
 
+  type Notification {
+    comment: String
+    provider: String
+    consumer: String
+  }
+
   input ExpenseReportInput {
     date: String!
     time: String!
@@ -415,7 +421,7 @@ const typeDefs = gql`
     admin_desc: String!
     report: String
     status: CallStatus
-    work_type:String
+    work_type: String
   }
 
   type Attendence {
