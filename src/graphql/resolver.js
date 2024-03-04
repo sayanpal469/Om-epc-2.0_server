@@ -399,6 +399,55 @@ const resolvers = {
       return response;
     },
 
+    getEngNotification: async (_, { eng_emp }, { userId }) => {
+      if (!userId) {
+        // If the user is not authenticated (no token), throw an error
+        throw new Error("Authentication required");
+      }
+
+      const existingEng = await Engineer.findOne({ eng_emp: eng_emp });
+
+      if (!existingEng) {
+        throw new Error("Engineer not found");
+      }
+
+      const notification = await Notification.find({ consumer: eng_emp });
+
+      if (!notification || notification.length === 0) {
+        throw new Error("Notification not found");
+      }
+
+      console.log(notification);
+
+      return notification;
+    },
+
+    getAdminNotification: async (_, { eng_emp }, { userId }) => {
+      if (!userId) {
+        // If the user is not authenticated (no token), throw an error
+        throw new Error("Authentication required");
+      }
+
+      const existingEng = await Engineer.findOne({ eng_emp: eng_emp });
+
+      if (!existingEng) {
+        throw new Error("Engineer not found");
+      }
+
+      const notification = await Notification.find({ provider: eng_emp });
+
+      if (!notification || notification.length === 0) {
+        throw new Error("Notification not found");
+      }
+
+      console.log(notification);
+
+      return notification;
+    },
+
+
+
+
     // getQRCode: async (_, __, { userId }) => {
     //   try {
     //     if (!userId) {
