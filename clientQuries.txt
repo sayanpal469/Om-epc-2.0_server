@@ -695,3 +695,43 @@ query GetQrCode {
 {
   "authorization": "yourTokenHere"
 }
+
+
+//-------GET ENGINEER NOTIFICATION
+query Query($eng_emp: String!) {
+  getEngNotification(eng_emp: $eng_emp) {
+    comment
+    provider
+    consumer
+  }
+}
+
+### Variables
+{
+  "eng_emp": "test/036"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
+
+
+//-------GET ADMIN NOTIFICATION
+query Query($eng_emp: String!) {
+  getAdminNotification(eng_emp: $eng_emp) {
+    comment
+    provider
+    consumer
+  }
+}
+
+### Variables
+{
+  "eng_emp": "test/036"
+}
+
+# CHECK AUTHORIZATION
+{
+  "authorization": "yourTokenHere"
+}
