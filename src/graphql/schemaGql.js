@@ -203,7 +203,7 @@ const typeDefs = gql`
   }
 
   type SubmitExpenseResponse {
-    # call_id: String
+    call_id: String
     message: String
   }
 
@@ -364,6 +364,7 @@ const typeDefs = gql`
     customer_contact: String!
     submit_date: String
     visit_date: String
+    work_type: String
     completed: Boolean
     site_images: [String]
     expense_amount: String

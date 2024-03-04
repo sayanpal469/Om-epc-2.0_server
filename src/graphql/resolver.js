@@ -833,6 +833,7 @@ const resolvers = {
             message: "Expense report submitted",
           };
           return response;
+          console.log(response);
         } catch (error) {
           // console.error(error.message);
           throw new Error(error.message);
